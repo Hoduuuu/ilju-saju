@@ -18,23 +18,28 @@ function Segmented<T extends string>(props: {
   onChange: (value: T) => void;
   describedBy?: string;
 }) {
+  const name = `segmented-${props.label}`;
   return (
     <div role="radiogroup" aria-label={props.label} aria-describedby={props.describedBy} className="grid auto-cols-fr grid-flow-col gap-1 rounded-2xl bg-soft p-1">
       {props.options.map((option) => {
         const selected = props.value === option.value;
         return (
-          <button
-            key={option.value}
-            type="button"
-            role="radio"
-            aria-checked={selected}
-            onClick={() => props.onChange(option.value)}
-            className={`h-11 rounded-xl text-[15px] font-semibold transition ${
-              selected ? "bg-white text-ink shadow-[0_1px_4px_rgba(22,24,29,0.12)]" : "text-sub"
-            }`}
-          >
-            {option.label}
-          </button>
+          <label key={option.value} className="relative flex cursor-pointer">
+            <input
+              type="radio"
+              name={name}
+              className="peer sr-only"
+              checked={selected}
+              onChange={() => props.onChange(option.value)}
+            />
+            <span
+              className={`flex h-11 w-full items-center justify-center rounded-xl text-[15px] font-semibold transition peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-ink ${
+                selected ? "bg-white text-ink shadow-[0_1px_4px_rgba(22,24,29,0.12)]" : "text-sub"
+              }`}
+            >
+              {option.label}
+            </span>
+          </label>
         );
       })}
     </div>
