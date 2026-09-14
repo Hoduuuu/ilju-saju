@@ -9,9 +9,9 @@ describe("scrim", () => {
     expect(scrimAlphaAt(0.9)).toBe(0);
   });
 
-  it("CSS 그라데이션 문자열", () => {
-    expect(scrimCss("#16181d")).toBe(
-      "linear-gradient(180deg, rgba(22,24,29,1) 0%, rgba(22,24,29,0.8) 45%, rgba(22,24,29,0) 65%)",
+  it("CSS 그라데이션 문자열 (한지색 워시)", () => {
+    expect(scrimCss("#E6D9BC")).toBe(
+      "linear-gradient(180deg, rgba(230,217,188,1) 0%, rgba(230,217,188,0.8) 45%, rgba(230,217,188,0) 65%)",
     );
   });
 });

@@ -23,16 +23,16 @@ interface Props {
 }
 
 export default function ResultView({ result, ilju, onReset, heroKeywords, heroSentence, exportRef, children }: Props) {
-  const accent = ilju.palette.top;
+  const accent = ilju.palette.ink;
   const keywords = heroKeywords && heroKeywords.length > 0 ? heroKeywords : ilju.keywords;
   return (
     <main>
       <div ref={exportRef} className="bg-white">
         <IljuVisual ilju={ilju} rounded={false}>
-          <div className="fade-up flex h-full flex-col px-6 pt-6 text-white">
+          <div className="fade-up flex h-full flex-col px-6 pt-6 text-ink">
             <ul className="flex flex-wrap gap-1.5">
               {keywords.map((keyword) => (
-                <li key={keyword} className="rounded-full bg-black/25 px-3 py-1 text-[12px] font-semibold">
+                <li key={keyword} className="rounded-full border border-ink/15 bg-[#16181d]/8 px-3 py-1 text-[12px] font-semibold">
                   #{keyword}
                 </li>
               ))}
@@ -46,7 +46,7 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
                 {ilju.korean}일주 사주 결과
               </span>
             </h1>
-            <div className="mt-1.5 line-clamp-2 text-[15px] font-medium leading-relaxed">{heroSentence}</div>
+            <div className="mt-1.5 line-clamp-2 text-[15px] font-medium leading-relaxed text-ink/80">{heroSentence}</div>
           </div>
         </IljuVisual>
 

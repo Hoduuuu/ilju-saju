@@ -65,7 +65,7 @@ export default function ResultPage() {
 
   const heroSentence =
     summary?.sentence ||
-    (state.status === "streaming" ? <span aria-label="한 줄 요약을 쓰는 중" className="inline-block h-4 w-44 animate-pulse rounded bg-white/30" /> : null);
+    (state.status === "streaming" ? <span aria-label="한 줄 요약을 쓰는 중" className="inline-block h-4 w-44 animate-pulse rounded bg-[#16181d]/12" /> : null);
 
   return (
     <>
@@ -80,7 +80,7 @@ export default function ResultPage() {
           router.push("/");
         }}
       >
-        <InterpretationSections state={state} sections={sections} timeKnown={input.time !== null} accent={ilju.palette.top} onRetry={retry} />
+        <InterpretationSections state={state} sections={sections} timeKnown={input.time !== null} accent={ilju.palette.ink} onRetry={retry} />
 
         <div data-export-ignore="true" className="mt-6">
           <div className="grid grid-cols-2 gap-2">

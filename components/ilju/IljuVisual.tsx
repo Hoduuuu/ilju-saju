@@ -2,7 +2,7 @@
 
 import { useState, useSyncExternalStore, type ReactNode } from "react";
 import type { IljuEntry } from "@/lib/ilju/data";
-import { gradientCss } from "@/lib/ilju/palette";
+import { paperCss } from "@/lib/ilju/palette";
 import { scrimCss, TEXT_ZONE } from "@/lib/ilju/scrim";
 import Motif from "./Motif";
 
@@ -26,9 +26,9 @@ export default function IljuVisual({ ilju, rounded = true, radius = "20px", clas
   return (
     <div
       className={`relative aspect-[3/4] w-full overflow-hidden ${className}`}
-      style={{ background: gradientCss(ilju.palette), borderRadius: rounded ? radius : undefined }}
+      style={{ background: paperCss(ilju.palette), borderRadius: rounded ? radius : undefined }}
     >
-      {!loaded && <Motif motif={ilju.motif} light={ilju.palette.bottom} deep={ilju.palette.mid} />}
+      {!loaded && <Motif motif={ilju.motif} ink={ilju.palette.ink} />}
       {hydrated && (
         /* eslint-disable-next-line @next/next/no-img-element -- PNG 저장(html-to-image) 호환을 위해 일반 img 사용 */
         <img
@@ -40,7 +40,7 @@ export default function IljuVisual({ ilju, rounded = true, radius = "20px", clas
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       )}
-      {loaded && <div aria-hidden className="absolute inset-0" style={{ background: scrimCss(ilju.palette.top) }} />}
+      {loaded && <div aria-hidden className="absolute inset-0" style={{ background: scrimCss(ilju.palette.paper) }} />}
       <div className="absolute inset-x-0 top-0 overflow-hidden" style={{ height: `${TEXT_ZONE * 100}%` }}>
         {children}
       </div>

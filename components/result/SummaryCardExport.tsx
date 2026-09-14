@@ -18,10 +18,10 @@ export default function SummaryCardExport({ ref, result, ilju, sentence, keyword
       <div ref={ref} className="flex flex-col bg-white" style={{ width: 1080, height: 1920 }}>
         <div style={{ width: 1080, height: 1440 }}>
           <IljuVisual ilju={ilju} rounded={false}>
-            <div className="flex h-full flex-col px-[72px] pt-[80px] text-white">
+            <div className="flex h-full flex-col px-[72px] pt-[80px] text-ink">
               <ul className="flex flex-wrap gap-4">
                 {keywords.map((keyword) => (
-                  <li key={keyword} className="rounded-full bg-black/25 px-7 py-2.5 text-[34px] font-semibold">
+                  <li key={keyword} className="rounded-full border border-ink/15 bg-[#16181d]/8 px-7 py-2.5 text-[34px] font-semibold">
                     #{keyword}
                   </li>
                 ))}
@@ -39,7 +39,7 @@ export default function SummaryCardExport({ ref, result, ilju, sentence, keyword
                 <div
                   key={col.key}
                   className={`flex w-[120px] flex-col items-center rounded-[28px] py-4 font-hanja text-[60px] font-bold leading-tight ${col.highlight ? "text-white" : "bg-soft text-ink"}`}
-                  style={col.highlight ? { background: ilju.palette.top } : undefined}
+                  style={col.highlight ? { background: ilju.palette.ink } : undefined}
                 >
                   <span>{col.pillar ? col.pillar.stemHanja : "?"}</span>
                   <span>{col.pillar ? col.pillar.branchHanja : "?"}</span>

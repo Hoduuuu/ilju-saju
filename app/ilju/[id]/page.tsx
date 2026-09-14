@@ -30,10 +30,10 @@ export default async function IljuDetailPage({ params }: { params: Promise<{ id:
       </Link>
 
       <IljuVisual ilju={entry} className="mt-1">
-        <div className="flex h-full flex-col px-6 pt-6 text-white">
+        <div className="flex h-full flex-col px-6 pt-6 text-ink">
           <ul className="flex flex-wrap gap-1.5">
             {entry.keywords.map((keyword) => (
-              <li key={keyword} className="rounded-full bg-black/25 px-3 py-1 text-[12px] font-semibold">
+              <li key={keyword} className="rounded-full border border-ink/15 bg-[#16181d]/8 px-3 py-1 text-[12px] font-semibold">
                 #{keyword}
               </li>
             ))}

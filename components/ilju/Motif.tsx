@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import type { Motif as MotifKind } from "@/lib/ilju/stems";
 
-const SHAPES: Record<MotifKind, (light: string, deep: string) => ReactNode> = {
+/** 이미지가 없을 때의 대체 모티프. 먹색(ink)을 두 단계 불투명도로 써서 한지 위 먹 그림처럼 보이게 한다 */
+const SHAPES: Record<MotifKind, (main: string, sub: string) => ReactNode> = {
   tree: (l, d) => (
     <g>
       <rect x="141" y="285" width="18" height="110" rx="6" fill={d} />
@@ -87,11 +88,14 @@ const SHAPES: Record<MotifKind, (light: string, deep: string) => ReactNode> = {
   ),
 };
 
-export default function Motif({ motif, light, deep }: { motif: MotifKind; light: string; deep: string }) {
+export default function Motif({ motif, ink }: { motif: MotifKind; ink: string }) {
   return (
     <svg aria-hidden viewBox="0 0 300 400" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full">
-      <ellipse cx="150" cy="430" rx="260" ry="90" fill={light} opacity="0.5" />
-      {SHAPES[motif](light, deep)}
+      <ellipse cx="150" cy="430" rx="260" ry="90" fill={ink} opacity="0.2" />
+      {SHAPES[motif](
+        `${ink}D1` /* main shape, opacity 0.82 */,
+        `${ink}73` /* secondary shape, opacity 0.45 */,
+      )}
     </svg>
   );
 }
