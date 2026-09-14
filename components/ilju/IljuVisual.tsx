@@ -11,11 +11,13 @@ const noopSubscribe = () => () => {};
 interface Props {
   ilju: IljuEntry;
   rounded?: boolean;
+  /** rounded일 때 적용할 모서리 반경. 기본 20px, 도감 카드처럼 더 작은 값이 필요할 때만 넘긴다. */
+  radius?: string;
   className?: string;
   children?: ReactNode;
 }
 
-export default function IljuVisual({ ilju, rounded = true, className = "", children }: Props) {
+export default function IljuVisual({ ilju, rounded = true, radius = "20px", className = "", children }: Props) {
   // img는 하이드레이션 뒤에만 그린다. 서버에서 그린 img가 먼저 로드되면 onLoad를 놓치기 때문이다.
   const hydrated = useSyncExternalStore(noopSubscribe, () => true, () => false);
   const [loadedId, setLoadedId] = useState<string | null>(null);
@@ -23,8 +25,8 @@ export default function IljuVisual({ ilju, rounded = true, className = "", child
 
   return (
     <div
-      className={`relative aspect-[3/4] w-full overflow-hidden ${rounded ? "rounded-[20px]" : ""} ${className}`}
-      style={{ background: gradientCss(ilju.palette) }}
+      className={`relative aspect-[3/4] w-full overflow-hidden ${className}`}
+      style={{ background: gradientCss(ilju.palette), borderRadius: rounded ? radius : undefined }}
     >
       {!loaded && <Motif motif={ilju.motif} light={ilju.palette.bottom} deep={ilju.palette.mid} />}
       {hydrated && (

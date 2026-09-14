@@ -10,12 +10,18 @@ const filled: FormValues = {
 };
 
 describe("formToInput", () => {
-  it("시간 모름(기본)이면 time null", () => {
-    const r = formToInput(filled);
+  it("시간을 모르면 time null", () => {
+    const r = formToInput({ ...filled, timeKnown: false });
     expect(r).toEqual({
       ok: true,
       input: { calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "female", placeId: "seoul" },
     });
+  });
+
+  it("기본값(시간 입력 유도)이면 time을 채워야 성공한다", () => {
+    const r = formToInput({ ...filled, time: "07:05", placeId: "busan" });
+    expect(r.ok && r.input.time).toEqual({ hour: 7, minute: 5 });
+    expect(r.ok && r.input.placeId).toBe("busan");
   });
 
   it("시간을 알면 HH:MM을 숫자로 바꾼다", () => {
@@ -27,7 +33,7 @@ describe("formToInput", () => {
   it("빈 값은 필드별 오류", () => {
     const r = formToInput(EMPTY_FORM);
     expect(r.ok).toBe(false);
-    if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["day", "gender", "month", "year"]);
+    if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["day", "gender", "month", "time", "year"]);
   });
 
   it("시간을 안다고 했는데 비어 있으면 time 오류", () => {
@@ -37,12 +43,13 @@ describe("formToInput", () => {
   });
 
   it("양력이면 윤달 체크를 무시한다", () => {
-    const r = formToInput({ ...filled, isLeapMonth: true });
+    const r = formToInput({ ...filled, timeKnown: false, isLeapMonth: true });
+    expect(r.ok).toBe(true);
     expect(r.ok && r.input.isLeapMonth).toBe(false);
   });
 
   it("없는 날짜는 form 오류로 계산 엔진 메시지를 보여준다", () => {
-    const r = formToInput({ ...filled, month: "2", day: "30" });
+    const r = formToInput({ ...filled, timeKnown: false, month: "2", day: "30" });
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.errors.form).toContain("없는 날짜");
   });

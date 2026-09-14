@@ -63,12 +63,12 @@ export default function IljuGallery({ entries }: { entries: IljuEntry[] }) {
         {visible.map((entry) => (
           <li key={entry.id}>
             <Link href={`/ilju/${entry.id}`} aria-label={`${entry.korean}일주, ${entry.symbol}${myIljuId === entry.id ? ", 내 일주" : ""}`} className="block">
-              <IljuVisual ilju={entry}>
+              <IljuVisual ilju={entry} radius="8px">
                 <div className="relative flex h-full flex-col p-3 text-white">
                   {myIljuId === entry.id && (
                     <span className="absolute right-3 top-3 rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-ink">나</span>
                   )}
-                  <p className="font-hanja text-[24px] font-black leading-none tracking-[-0.03em]">{entry.hanja}</p>
+                  <p className="font-hanja text-[20px] font-black leading-none tracking-[-0.03em]">{entry.hanja}</p>
                   <p className="mt-1 line-clamp-2 text-[11px] font-semibold leading-snug">{entry.symbol}</p>
                 </div>
               </IljuVisual>

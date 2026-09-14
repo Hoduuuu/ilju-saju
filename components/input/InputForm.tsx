@@ -11,8 +11,9 @@ const PLACE_GROUPS = placesByProvince();
 const inputClass =
   "h-11 w-full rounded-none border-0 border-b border-line bg-transparent px-1 text-[17px] font-semibold text-ink outline-none transition focus:border-ink disabled:text-sub";
 
-function RadioPair<T extends string>(props: {
-  ariaLabel: string;
+/** 성별/양력·음력처럼 라벨 옆에 붙는 우측 정렬 라디오 그룹. 두 사용처가 동일한 폭·타이포로 렌더돼 같은 열에 정렬된다. */
+function InlineRadioGroup<T extends string>(props: {
+  label: string;
   name: string;
   value: T | "";
   options: { value: T; label: string }[];
@@ -20,7 +21,12 @@ function RadioPair<T extends string>(props: {
   describedBy?: string;
 }) {
   return (
-    <div role="radiogroup" aria-label={props.ariaLabel} aria-describedby={props.describedBy} className="flex items-center gap-4">
+    <div
+      role="radiogroup"
+      aria-label={props.label}
+      aria-describedby={props.describedBy}
+      className="flex w-[104px] items-center justify-end gap-4"
+    >
       {props.options.map((option) => {
         const selected = props.value === option.value;
         return (
@@ -91,9 +97,27 @@ function InputFormFields({ initial }: { initial: FormValues }) {
     <form onSubmit={onSubmit} noValidate className="mt-6 flex flex-col gap-4">
       <div>
         <div className="flex items-center justify-between">
+          <p className="text-[13px] font-semibold">성별</p>
+          <InlineRadioGroup
+            label="성별"
+            name="gender"
+            value={values.gender}
+            describedBy={errors.gender ? "gender-error" : undefined}
+            options={[
+              { value: "female", label: "여성" },
+              { value: "male", label: "남성" },
+            ]}
+            onChange={(v) => update("gender", v)}
+          />
+        </div>
+        <FieldError id="gender-error" message={errors.gender} />
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between">
           <p className="text-[13px] font-semibold">생년월일</p>
-          <RadioPair
-            ariaLabel="달력"
+          <InlineRadioGroup
+            label="달력"
             name="calendar"
             value={values.calendar}
             options={[
@@ -141,42 +165,8 @@ function InputFormFields({ initial }: { initial: FormValues }) {
       </div>
 
       <div>
-        <p className="text-[13px] font-semibold">태어난 시간</p>
-        <div className="mt-2 grid grid-cols-2 gap-2">
-          <input
-            type="time"
-            value={values.time}
-            disabled={!timeEnabled}
-            aria-invalid={Boolean(errors.time)}
-            aria-describedby={errors.time ? "time-error" : undefined}
-            onChange={(e) => update("time", e.target.value)}
-            className={`${inputClass} ${!timeEnabled ? "opacity-45" : ""}`}
-          />
-          <span className="relative">
-            <select
-              value={values.placeId}
-              disabled={!timeEnabled}
-              onChange={(e) => update("placeId", e.target.value)}
-              className={`${inputClass} appearance-none pr-5 ${!timeEnabled ? "opacity-45" : ""}`}
-            >
-              {PLACE_GROUPS.map((group) => (
-                <optgroup key={group.province} label={group.province}>
-                  {group.places.map((place) => (
-                    <option key={place.id} value={place.id}>
-                      {place.city}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
-            <span aria-hidden className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-[12px] text-sub">
-              ▾
-            </span>
-          </span>
-        </div>
-        <FieldError id="time-error" message={errors.time} />
-
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="flex items-center justify-between">
+          <p className="text-[13px] font-semibold">태어난 시간</p>
           <label className="flex items-center gap-2 text-[13px]">
             <input
               type="checkbox"
@@ -186,29 +176,51 @@ function InputFormFields({ initial }: { initial: FormValues }) {
             />
             시간을 몰라요
           </label>
-          <span className="text-[12px] text-sub">시간을 넣으면 시주까지 더 자세히 풀이해요</span>
         </div>
-        {timeEnabled && <p className="mt-1 text-[11px] text-sub">출생지 경도와 과거 서머타임을 반영해 계산해요.</p>}
-      </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-baseline gap-1.5">
-          <p className="text-[13px] font-semibold">성별</p>
-          <span className="text-[11px] text-sub">대운 계산에 필요해요</span>
-        </div>
-        <RadioPair
-          ariaLabel="성별"
-          name="gender"
-          value={values.gender}
-          describedBy={errors.gender ? "gender-error" : undefined}
-          options={[
-            { value: "female", label: "여성" },
-            { value: "male", label: "남성" },
-          ]}
-          onChange={(v) => update("gender", v)}
-        />
+        {timeEnabled && (
+          <>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <input
+                type="time"
+                value={values.time}
+                aria-invalid={Boolean(errors.time)}
+                aria-describedby={errors.time ? "time-error" : undefined}
+                onChange={(e) => update("time", e.target.value)}
+                className={inputClass}
+              />
+              <span className="relative">
+                <select
+                  value={values.placeId}
+                  onChange={(e) => update("placeId", e.target.value)}
+                  className={`${inputClass} appearance-none pr-5`}
+                >
+                  {PLACE_GROUPS.map((group) => (
+                    <optgroup key={group.province} label={group.province}>
+                      {group.places.map((place) => (
+                        <option key={place.id} value={place.id}>
+                          {place.city}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <span aria-hidden className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-[12px] text-sub">
+                  ▾
+                </span>
+              </span>
+            </div>
+            <FieldError id="time-error" message={errors.time} />
+            {/* 출생지는 진태양시(출생지 경도) 보정에만 쓰인다. 시간을 모르면 시주를 계산하지 않으므로
+                이 보정 자체가 필요 없어 출생지 값이 결과에 영향을 주지 않는다 — 그래서 시간 미상일 때는 숨긴다. */}
+            <p className="mt-1 text-[11px] text-sub">출생지 경도와 과거 서머타임을 반영해 계산해요.</p>
+          </>
+        )}
+
+        <p className="mt-2 text-[12px] text-sub">
+          {timeEnabled ? "시간을 넣으면 시주까지 8글자로 더 자세히 풀이해요." : "시간을 모르면 시주를 뺀 6글자로 풀이해요."}
+        </p>
       </div>
-      <FieldError id="gender-error" message={errors.gender} />
 
       {errors.form && (
         <p role="alert" className="rounded-xl bg-[#fdecea] px-4 py-3 text-[14px] font-medium text-[#9f2a24]">
@@ -216,7 +228,10 @@ function InputFormFields({ initial }: { initial: FormValues }) {
         </p>
       )}
 
-      <button type="submit" className="h-12 rounded-full bg-ink text-[16px] font-bold text-white transition active:scale-[0.99]">
+      <button
+        type="submit"
+        className="h-11 w-full rounded-full bg-ink text-[14px] font-bold text-white transition active:scale-[0.99]"
+      >
         내 일주 보기
       </button>
     </form>

@@ -22,7 +22,7 @@ export const EMPTY_FORM: FormValues = {
   year: "",
   month: "",
   day: "",
-  timeKnown: false,
+  timeKnown: true,
   time: "",
   gender: "",
   placeId: DEFAULT_PLACE_ID,
