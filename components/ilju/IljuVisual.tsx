@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore, type ReactNode } from "react";
 import type { IljuEntry } from "@/lib/ilju/data";
 import { gradientCss } from "@/lib/ilju/palette";
-import { scrimCss } from "@/lib/ilju/scrim";
+import { scrimCss, TEXT_ZONE } from "@/lib/ilju/scrim";
 import Motif from "./Motif";
 
 const noopSubscribe = () => () => {};
@@ -39,7 +39,9 @@ export default function IljuVisual({ ilju, rounded = true, className = "", child
         />
       )}
       {loaded && <div aria-hidden className="absolute inset-0" style={{ background: scrimCss(ilju.palette.top) }} />}
-      <div className="absolute inset-x-0 top-0 h-[45%] overflow-hidden">{children}</div>
+      <div className="absolute inset-x-0 top-0 overflow-hidden" style={{ height: `${TEXT_ZONE * 100}%` }}>
+        {children}
+      </div>
     </div>
   );
 }

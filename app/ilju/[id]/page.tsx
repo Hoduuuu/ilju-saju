@@ -31,7 +31,7 @@ export default async function IljuDetailPage({ params }: { params: Promise<{ id:
       </Link>
 
       <IljuVisual ilju={entry} className="mt-1">
-        <div className="flex h-full flex-col px-6 pt-7 text-white">
+        <div className="flex h-full flex-col px-6 pt-6 text-white">
           <ul className="flex flex-wrap gap-1.5">
             {entry.keywords.map((keyword) => (
               <li key={keyword} className="rounded-full bg-black/25 px-3 py-1 text-[12px] font-semibold">
@@ -39,7 +39,7 @@ export default async function IljuDetailPage({ params }: { params: Promise<{ id:
               </li>
             ))}
           </ul>
-          <h1 className="mt-4">
+          <h1 className="mt-3">
             <span aria-hidden className="block font-hanja text-[clamp(52px,17vw,64px)] font-black leading-none tracking-[-0.04em]">
               {entry.hanja}
             </span>
