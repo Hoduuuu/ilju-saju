@@ -10,7 +10,7 @@ export async function downloadElementAsPng(node: HTMLElement, fileName: string, 
   const dataUrl = await toPng(node, {
     cacheBust: true,
     backgroundColor: "#ffffff",
-    pixelRatio: size || tooTall ? 1 : 2,
+    pixelRatio: (size || tooTall) ? 1 : 2,
     width: size?.width,
     height: size?.height,
     filter: (element) => !(element instanceof HTMLElement && element.dataset.exportIgnore === "true"),

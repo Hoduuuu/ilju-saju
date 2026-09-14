@@ -111,7 +111,7 @@ export default function ResultPage() {
         ref={summaryRef}
         result={result}
         ilju={ilju}
-        sentence={summary?.sentence ?? ilju.symbol}
+        sentence={summary?.sentence || ilju.symbol}
         keywords={summary?.keywords.length ? summary.keywords : ilju.keywords}
       />
     </>
