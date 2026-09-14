@@ -56,7 +56,8 @@ export default function ResultPage() {
     setSaveError(null);
     try {
       await downloadElementAsPng(node, exportFileName(ilju.korean, kind), kind === "summary" ? { width: 1080, height: 1920 } : undefined);
-    } catch {
+    } catch (error) {
+      console.error("[export] PNG 저장 실패", error);
       setSaveError("이미지를 저장하지 못했어요. 다시 시도해 주세요.");
     } finally {
       setSaving(null);
