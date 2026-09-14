@@ -34,7 +34,7 @@ export async function POST(request: Request): Promise<Response> {
           abort.abort();
         }
       };
-      void runClaude({ systemPrompt: SYSTEM_PROMPT, userPrompt, model: process.env.CLAUDE_MODEL, signal: abort.signal }, send).finally(() => {
+      void runClaude({ systemPrompt: SYSTEM_PROMPT, userPrompt, model: process.env.CLAUDE_MODEL || undefined, signal: abort.signal }, send).finally(() => {
         try {
           controller.close();
         } catch {

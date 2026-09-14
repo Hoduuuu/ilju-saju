@@ -15,6 +15,7 @@ beforeEach(() => {
 afterEach(() => {
   delete process.env.CLAUDE_BIN;
   delete process.env.FAKE_CLAUDE_MODE;
+  delete process.env.CLAUDE_MODEL;
 });
 
 describe("POST /api/interpret", () => {
@@ -33,5 +34,13 @@ describe("POST /api/interpret", () => {
     const response = await post({ ...input, month: 13 });
     expect(response.status).toBe(400);
     expect((await response.json()).message).toContain("생년월일");
+  });
+
+  it("CLAUDE_MODEL이 빈 문자열이면 기본 모델(sonnet)을 사용한다", async () => {
+    process.env.CLAUDE_MODEL = "";
+    const response = await post(input);
+    const events = (await response.text()).trim().split("\n").map((l) => JSON.parse(l));
+    const text = events.filter((e) => e.type === "text").map((e) => e.text).join("");
+    expect(text).toContain("--model|sonnet");
   });
 });
