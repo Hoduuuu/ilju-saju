@@ -27,6 +27,7 @@ describe("runClaude", () => {
     expect(text).toContain("STDIN:사용자 질문");
     expect(text).toContain("LEAKED:false");
     expect(text).toContain("-p|--output-format|stream-json|--verbose|--include-partial-messages|--tools||--no-session-persistence");
+    expect(text).toContain("--strict-mcp-config");
     expect(text).toContain("--setting-sources|project|--model|sonnet|--system-prompt|SYS");
     expect(events.at(-1)).toEqual({ type: "done" });
     expect(events.filter((e) => e.type !== "text")).toHaveLength(1);
@@ -57,5 +58,12 @@ describe("runClaude", () => {
   it("실행 파일이 없으면 not_installed", async () => {
     const events = await collect("ok", { bin: "/nonexistent/claude" });
     expect(events).toEqual([{ type: "error", code: "not_installed", message: expect.any(String) }]);
+  });
+
+  it("이미 중단된 신호면 실행하지 않고 끝난다", async () => {
+    const controller = new AbortController();
+    controller.abort();
+    const events = await collect("ok", { signal: controller.signal, bin: "/nonexistent/claude" });
+    expect(events).toEqual([]);
   });
 });

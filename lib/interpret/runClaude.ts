@@ -31,6 +31,11 @@ export function buildClaudeArgs(systemPrompt: string, model: string): string[] {
 /** claude -p를 실행해 이벤트를 전달한다. 항상 resolve된다. */
 export function runClaude(options: RunClaudeOptions, onEvent: (event: InterpretEvent) => void): Promise<void> {
   return new Promise((resolve) => {
+    if (options.signal?.aborted) {
+      resolve();
+      return;
+    }
+
     const env = { ...process.env };
     delete env.ANTHROPIC_API_KEY;
     delete env.ANTHROPIC_AUTH_TOKEN;
@@ -63,20 +68,25 @@ export function runClaude(options: RunClaudeOptions, onEvent: (event: InterpretE
       stdio: ["pipe", "pipe", "pipe"],
     });
 
-    const timer = setTimeout(() => {
+    /** SIGTERM을 보내고, 3초 안에 종료되지 않으면 SIGKILL로 확실히 정리한다. settle()은 이를 기다리지 않는다. */
+    const terminate = () => {
       child.kill("SIGTERM");
+      const killTimer = setTimeout(() => {
+        if (child.exitCode === null && child.signalCode === null) child.kill("SIGKILL");
+      }, 3_000);
+      killTimer.unref();
+    };
+
+    const timer = setTimeout(() => {
+      terminate();
       settle({ type: "error", code: "timeout", message: ERROR_MESSAGES.timeout });
     }, options.timeoutMs ?? 120_000);
 
     const onAbort = () => {
       terminalSent = true;
-      child.kill("SIGTERM");
+      terminate();
       settle();
     };
-    if (options.signal?.aborted) {
-      onAbort();
-      return;
-    }
     options.signal?.addEventListener("abort", onAbort, { once: true });
 
     child.stdout.setEncoding("utf8");
