@@ -17,11 +17,13 @@ const textOf = (events: InterpretEvent[]) => events.map((e) => (e.type === "text
 afterEach(() => {
   delete process.env.FAKE_CLAUDE_MODE;
   delete process.env.ANTHROPIC_API_KEY;
+  delete process.env.CF_API_TOKEN;
 });
 
 describe("runClaude", () => {
   it("stdin으로 프롬프트를 넘기고, API 키를 빼고, 필요한 옵션으로 실행한다", async () => {
     process.env.ANTHROPIC_API_KEY = "sk-test";
+    process.env.CF_API_TOKEN = "cf-test";
     const events = await collect("ok");
     const text = textOf(events);
     expect(text).toContain("STDIN:사용자 질문");

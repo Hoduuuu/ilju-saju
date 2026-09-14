@@ -11,7 +11,7 @@ export const ERROR_MESSAGES: Record<InterpretErrorCode, string> = {
   not_installed: "claude 명령어를 찾을 수 없어요. Claude Code가 설치되어 있는지 확인해 주세요.",
   auth: "Claude Code 로그인이 필요해요. 터미널에서 claude를 실행해 /login 한 뒤 다시 시도해 주세요.",
   limit: "Claude 사용량 한도에 도달했어요. 잠시 후 다시 시도해 주세요.",
-  timeout: "응답이 2분 넘게 없어 중단했어요. 다시 시도해 주세요.",
+  timeout: "풀이가 2분을 넘겨서 중단했어요. 다시 시도해 주세요.",
   failed: "풀이를 만들지 못했어요. 다시 시도해 주세요.",
 };
 

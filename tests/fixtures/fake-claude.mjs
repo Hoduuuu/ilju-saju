@@ -21,7 +21,9 @@ process.stdin.on("end", () => {
     out({ type: "result", subtype: "success", is_error: true, result: "Not logged in · Please run /login" });
     return;
   }
-  const leaked = Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
+  const leaked = Boolean(
+    process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN || process.env.CF_API_TOKEN || process.env.CF_ACCOUNT_ID,
+  );
   const text = `## [summary]\n키워드: 가, 나, 다\nARGS:${process.argv.slice(2).join("|")}\nLEAKED:${leaked}\nSTDIN:${stdin}`;
   for (const piece of [text.slice(0, 12), text.slice(12)]) {
     out({ type: "stream_event", event: { type: "content_block_delta", index: 0, delta: { type: "text_delta", text: piece } } });

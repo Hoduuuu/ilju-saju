@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import IljuVisual from "@/components/ilju/IljuVisual";
 import { ILJU_LIST, getIlju } from "@/lib/ilju/data";
 import { ELEMENT_HANJA } from "@/lib/saju/ganji";
-
-const ELEMENT_NAME = { 목: "나무", 화: "불", 토: "흙", 금: "쇠", 수: "물" } as const;
+import { ELEMENT_NAMES } from "@/lib/view/elements";
 
 export function generateStaticParams() {
   return ILJU_LIST.map((entry) => ({ id: entry.id }));
@@ -55,7 +54,7 @@ export default async function IljuDetailPage({ params }: { params: Promise<{ id:
         <div>
           <dt className="text-[12px] font-semibold text-sub">오행</dt>
           <dd className="mt-1 text-[15px] font-bold">
-            <span className="font-hanja">{ELEMENT_HANJA[entry.element]}</span> {ELEMENT_NAME[entry.element]}
+            <span className="font-hanja">{ELEMENT_HANJA[entry.element]}</span> {ELEMENT_NAMES[entry.element]}
           </dd>
         </div>
         <div>

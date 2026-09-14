@@ -39,6 +39,9 @@ export function runClaude(options: RunClaudeOptions, onEvent: (event: InterpretE
     const env = { ...process.env };
     delete env.ANTHROPIC_API_KEY;
     delete env.ANTHROPIC_AUTH_TOKEN;
+    // .env.local에서 로드되는 Cloudflare 자격증명도 claude 자식 프로세스에 넘길 필요가 없다.
+    delete env.CF_API_TOKEN;
+    delete env.CF_ACCOUNT_ID;
 
     const workDir = mkdtempSync(path.join(os.tmpdir(), "saju-claude-"));
     const parser = createClaudeEventParser();

@@ -47,7 +47,8 @@ async function generate(entry: IljuEntry, seed: number, useReference: boolean): 
   });
   const bodyText = await response.text();
   // 4006은 Workers AI 무료 일일 한도 오류 코드이고, "neuron(s)"는 한도 관련 메시지에 나타난다.
-  if (response.status === 429 || /\b4006\b|neurons?/i.test(bodyText)) throw new DailyLimitError(bodyText.slice(0, 300));
+  // 성공 응답의 본문은 ~1MB base64 PNG라서 우연히 이 단어들이 나타날 수 있으니, 실패 응답일 때만 검사한다.
+  if (response.status === 429 || (!response.ok && /\b4006\b|neurons?/i.test(bodyText))) throw new DailyLimitError(bodyText.slice(0, 300));
   let json: { success?: boolean; result?: { image?: string }; image?: string; errors?: unknown };
   try {
     json = JSON.parse(bodyText);

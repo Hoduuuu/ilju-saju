@@ -15,7 +15,7 @@ export function paletteFor(stem: StemNature, branch: BranchSeason): IljuPalette 
   return {
     top: rgbToHex(hslToRgb(stem.hue, stem.saturation, branch.topLightness)),
     mid: rgbToHex(hslToRgb(stem.hue, stem.saturation, branch.topLightness + 6)),
-    bottom: rgbToHex(hslToRgb(branch.bottomHue, 45, branch.bottomLightness)),
+    bottom: rgbToHex(hslToRgb(branch.bottomHue, 62, branch.bottomLightness)),
   };
 }
 

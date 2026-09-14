@@ -9,7 +9,7 @@ import { placesByProvince } from "@/lib/saju/places";
 
 const PLACE_GROUPS = placesByProvince();
 const inputClass =
-  "h-12 w-full rounded-xl border border-line bg-white px-3.5 text-[16px] font-medium text-ink outline-none transition focus:border-ink";
+  "h-11 w-full rounded-xl border border-line bg-white px-3 text-[16px] font-medium text-ink outline-none transition focus:border-ink";
 
 function Segmented<T extends string>(props: {
   label: string;
@@ -33,7 +33,7 @@ function Segmented<T extends string>(props: {
               onChange={() => props.onChange(option.value)}
             />
             <span
-              className={`flex h-11 w-full items-center justify-center rounded-xl text-[15px] font-semibold transition peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-ink ${
+              className={`flex h-10 w-full items-center justify-center rounded-xl text-[14px] font-semibold transition peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-ink ${
                 selected ? "bg-white text-ink shadow-[0_1px_4px_rgba(22,24,29,0.12)]" : "text-sub"
               }`}
             >
@@ -92,9 +92,9 @@ function InputFormFields({ initial }: { initial: FormValues }) {
   const dateError = errors.year ?? errors.month ?? errors.day;
 
   return (
-    <form onSubmit={onSubmit} noValidate className="mt-8 flex flex-col gap-7">
+    <form onSubmit={onSubmit} noValidate className="mt-8 flex flex-col gap-5">
       <div>
-        <p className="mb-2 text-[15px] font-bold">달력</p>
+        <p className="mb-2 text-[14px] font-bold">달력</p>
         <Segmented
           label="달력"
           value={values.calendar}
@@ -113,7 +113,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
       </div>
 
       <fieldset>
-        <legend className="mb-2 text-[15px] font-bold">생년월일</legend>
+        <legend className="mb-2 text-[14px] font-bold">생년월일</legend>
         <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-2">
           {(
             [
@@ -144,7 +144,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
       </fieldset>
 
       <div>
-        <p className="mb-2 text-[15px] font-bold">성별</p>
+        <p className="mb-2 text-[14px] font-bold">성별</p>
         <Segmented
           label="성별"
           value={values.gender}
@@ -159,7 +159,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
       </div>
 
       <fieldset>
-        <legend className="text-[15px] font-bold">태어난 시간</legend>
+        <legend className="text-[14px] font-bold">태어난 시간</legend>
         <p className="mt-1 text-[13px] text-sub">시간을 넣으면 풀이가 더 자세해져요. 모르면 &lsquo;잘 몰라요&rsquo;를 골라 주세요.</p>
         <div className="mt-3 grid gap-2">
           {TIME_OPTIONS.map((option) => {
@@ -167,7 +167,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
             return (
               <label
                 key={option.title}
-                className={`flex cursor-pointer gap-3 rounded-2xl border p-4 transition ${selected ? "border-ink bg-white" : "border-line bg-soft"}`}
+                className={`flex cursor-pointer gap-3 rounded-2xl border p-3.5 transition ${selected ? "border-ink bg-white" : "border-line bg-soft"}`}
               >
                 <input
                   type="radio"
@@ -177,7 +177,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
                   onChange={() => update("timeKnown", option.known)}
                 />
                 <span>
-                  <span className="block text-[15px] font-bold">{option.title}</span>
+                  <span className="block text-[14px] font-bold">{option.title}</span>
                   <span className="mt-0.5 block text-[13px] leading-relaxed text-sub">{option.body}</span>
                 </span>
               </label>
@@ -226,7 +226,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
         </p>
       )}
 
-      <button type="submit" className="h-14 rounded-full bg-ink text-[16px] font-bold text-white transition active:scale-[0.99]">
+      <button type="submit" className="h-12 rounded-full bg-ink text-[16px] font-bold text-white transition active:scale-[0.99]">
         내 일주 보기
       </button>
     </form>
