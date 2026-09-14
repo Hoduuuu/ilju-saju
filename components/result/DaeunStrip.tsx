@@ -10,7 +10,9 @@ export default function DaeunStrip({ result, accent }: { result: SajuResult; acc
   useEffect(() => {
     const list = listRef.current;
     const current = list?.querySelector<HTMLElement>('[aria-current="true"]');
-    if (list && current) list.scrollLeft = current.offsetLeft - 20;
+    if (list && current) {
+      list.scrollLeft = current.getBoundingClientRect().left - list.getBoundingClientRect().left + list.scrollLeft - 16;
+    }
   }, [currentDaeunIndex]);
 
   return (
