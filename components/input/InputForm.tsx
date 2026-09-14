@@ -55,11 +55,6 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-const TIME_OPTIONS = [
-  { known: true, title: "시간을 알아요", body: "시주까지 8글자를 모두 넣어 성향과 흐름을 더 자세히 풀이해요." },
-  { known: false, title: "잘 몰라요", body: "6글자로 풀이해요. 시주가 빠져서 세밀한 성향·말년 흐름 풀이는 제한돼요." },
-];
-
 /** 저장된 입력이 있으면 그 값으로 폼을 채운다. key로 다시 마운트해서 effect 없이 초기값을 넣는다. */
 export default function InputForm() {
   const stored = useStoredInput();
@@ -92,7 +87,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
   const dateError = errors.year ?? errors.month ?? errors.day;
 
   return (
-    <form onSubmit={onSubmit} noValidate className="mt-8 flex flex-col gap-5">
+    <form onSubmit={onSubmit} noValidate className="mt-8 flex flex-col gap-4">
       <div>
         <p className="mb-2 text-[14px] font-bold">달력</p>
         <Segmented
@@ -160,33 +155,21 @@ function InputFormFields({ initial }: { initial: FormValues }) {
 
       <fieldset>
         <legend className="text-[14px] font-bold">태어난 시간</legend>
-        <p className="mt-1 text-[13px] text-sub">시간을 넣으면 풀이가 더 자세해져요. 모르면 &lsquo;잘 몰라요&rsquo;를 골라 주세요.</p>
-        <div className="mt-3 grid gap-2">
-          {TIME_OPTIONS.map((option) => {
-            const selected = values.timeKnown === option.known;
-            return (
-              <label
-                key={option.title}
-                className={`flex cursor-pointer gap-3 rounded-2xl border p-3.5 transition ${selected ? "border-ink bg-white" : "border-line bg-soft"}`}
-              >
-                <input
-                  type="radio"
-                  name="timeKnown"
-                  className="mt-1 h-4 w-4 accent-[#16181d]"
-                  checked={selected}
-                  onChange={() => update("timeKnown", option.known)}
-                />
-                <span>
-                  <span className="block text-[14px] font-bold">{option.title}</span>
-                  <span className="mt-0.5 block text-[13px] leading-relaxed text-sub">{option.body}</span>
-                </span>
-              </label>
-            );
-          })}
+        <p className="mt-1 text-[12px] leading-relaxed text-sub">시간을 넣으면 시주까지 8글자로 더 자세히 풀이해요. 모르면 6글자로 풀이해요.</p>
+        <div className="mt-2">
+          <Segmented
+            label="태어난 시간"
+            value={values.timeKnown ? "known" : "unknown"}
+            options={[
+              { value: "known", label: "시간 알아요" },
+              { value: "unknown", label: "잘 몰라요" },
+            ]}
+            onChange={(v) => update("timeKnown", v === "known")}
+          />
         </div>
 
         {values.timeKnown && (
-          <div className="mt-3 grid grid-cols-2 gap-2">
+          <div className="mt-2 grid grid-cols-2 gap-2">
             <label>
               <span className="mb-1.5 block text-[13px] font-semibold text-sub">시간</span>
               <input
@@ -214,7 +197,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
             </label>
             <div className="col-span-2">
               <FieldError id="time-error" message={errors.time} />
-              <p className="mt-1 text-[12px] leading-relaxed text-sub">출생지 경도와 과거 서머타임을 반영해 실제 태양 시간으로 보정해요.</p>
+              <p className="mt-1 text-[11px] leading-relaxed text-sub">출생지 경도와 과거 서머타임을 반영해 실제 태양 시간으로 보정해요.</p>
             </div>
           </div>
         )}
