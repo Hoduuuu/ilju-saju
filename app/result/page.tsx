@@ -66,7 +66,7 @@ export default function ResultPage() {
 
   const heroSentence =
     summary?.sentence ||
-    (state.status === "streaming" ? <span aria-label="한 줄 요약을 쓰는 중" className="inline-block h-4 w-44 animate-pulse rounded bg-[#16181d]/12" /> : null);
+    (state.status === "streaming" ? <span aria-label="한 줄 요약을 쓰는 중" className="inline-block h-4 w-44 animate-pulse rounded bg-[#1F1A1A]/12" /> : null);
 
   return (
     <>

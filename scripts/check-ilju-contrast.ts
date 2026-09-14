@@ -15,8 +15,8 @@ async function main() {
       missing += 1;
       continue;
     }
-    const { data, info } = await sharp(file).resize(60, 80, { fit: "cover" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-    const ratio = textZoneContrast(new Uint8Array(data), info.width, info.height, info.channels);
+    const { data, info } = await sharp(file).resize(60, 80, { fit: "cover" }).raw().toBuffer({ resolveWithObject: true });
+    const ratio = textZoneContrast(new Uint8Array(data), info.width, info.height, info.channels, entry.palette.paper);
     const mark = ratio >= 4.5 ? "✔" : "✘";
     console.log(`${mark} ${entry.id.padEnd(12)} ${ratio.toFixed(2)}:1`);
     if (ratio < 4.5) failures.push(entry.id);

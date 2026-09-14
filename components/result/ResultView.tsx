@@ -32,7 +32,7 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
           <div className="fade-up flex h-full flex-col px-6 pt-6 text-ink">
             <ul className="flex flex-wrap gap-1.5">
               {keywords.map((keyword) => (
-                <li key={keyword} className="rounded-full border border-ink/15 bg-[#16181d]/8 px-3 py-1 text-[12px] font-semibold">
+                <li key={keyword} className="rounded-full border border-ink/15 bg-[#1F1A1A]/8 px-3 py-1 text-[12px] font-semibold">
                   #{keyword}
                 </li>
               ))}

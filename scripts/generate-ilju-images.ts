@@ -61,8 +61,31 @@ async function generate(entry: IljuEntry, seed: number, useReference: boolean): 
   return Buffer.from(base64, "base64");
 }
 
+/** 먹 색. 카드 배경색 위에 얹히는 그림의 색이다. */
+const INK_COLOR = "#332A2A";
+
+/**
+ * 흰 종이 위의 먹 그림을 투명 PNG로 바꾼다.
+ * - 밝은 곳(종이)은 투명, 어두운 곳(먹)은 불투명. 중간 회색은 반투명이라 번짐이 살아난다.
+ * - 모델이 액자처럼 여백을 남기는 습관이 있어 사방 3%를 먼저 잘라낸다(3:4 비율 유지).
+ */
 async function savePng(buffer: Buffer, file: string): Promise<void> {
-  await sharp(buffer).png().toFile(file);
+  const { width = 768, height = 1024 } = await sharp(buffer).metadata();
+  const insetX = Math.round(width * 0.03);
+  const insetY = Math.round(height * 0.03);
+  const cropped = await sharp(buffer)
+    .extract({ left: insetX, top: insetY, width: width - insetX * 2, height: height - insetY * 2 })
+    .resize(width, height, { fit: "fill" })
+    .toBuffer();
+
+  const gray = await sharp(cropped).greyscale().normalise().raw().toBuffer();
+  const alpha = Buffer.alloc(gray.length);
+  for (let i = 0; i < gray.length; i += 1) alpha[i] = 255 - gray[i];
+
+  await sharp({ create: { width, height, channels: 3, background: INK_COLOR } })
+    .joinChannel(alpha, { raw: { width, height, channels: 1 } })
+    .png()
+    .toFile(file);
 }
 
 function parseSeed(args: string[]): number {
@@ -117,23 +140,41 @@ async function main() {
         });
 
   let made = 0;
+  const failed: string[] = [];
   for (const entry of targets) {
     const file = path.join(OUT_DIR, `${entry.id}.png`);
     if (mode === "--all" && (await exists(file))) continue;
-    try {
-      await savePng(await generate(entry, seed, true), file);
-      made += 1;
-      console.log(`✔ ${entry.id} ${entry.symbol}`);
-    } catch (error) {
-      if (error instanceof DailyLimitError) {
-        console.error(`오늘 무료 사용량을 다 썼어요(${made}장 생성). 내일 오전 9시(KST) 이후 같은 명령을 다시 실행하면 이어서 만들어요.`);
-        process.exit(2);
+
+    // 일시적인 응답 지연(408 등)이 잦아 최대 3번까지 다시 시도한다.
+    let saved = false;
+    for (let attempt = 1; attempt <= 3 && !saved; attempt += 1) {
+      try {
+        await savePng(await generate(entry, seed, true), file);
+        saved = true;
+        made += 1;
+        console.log(`✔ ${entry.id} ${entry.symbol}`);
+      } catch (error) {
+        if (error instanceof DailyLimitError) {
+          console.error(`오늘 무료 사용량을 다 썼어요(${made}장 생성). 내일 오전 9시(KST) 이후 같은 명령을 다시 실행하면 이어서 만들어요.`);
+          process.exit(2);
+        }
+        const message = error instanceof Error ? error.message : String(error);
+        if (attempt === 3) {
+          failed.push(entry.id);
+          console.error(`✘ ${entry.id} 실패 (3회 시도): ${message.slice(0, 120)}`);
+        } else {
+          console.error(`… ${entry.id} 재시도 ${attempt}/3: ${message.slice(0, 80)}`);
+          await new Promise((r) => setTimeout(r, 3000 * attempt));
+        }
       }
-      throw error;
     }
     await new Promise((r) => setTimeout(r, 500));
   }
-  console.log(`완료: ${made}장 생성. 다음으로 npm run images:check 를 실행하세요.`);
+  console.log(`완료: ${made}장 생성.`);
+  if (failed.length > 0) {
+    console.log(`실패 ${failed.length}장 → 다시 만들기: npm run images:only -- ${failed.join(",")}`);
+  }
+  console.log("다음으로 npm run images:check 를 실행하세요.");
 }
 
 main().catch((error) => {

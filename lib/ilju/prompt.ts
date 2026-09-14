@@ -2,13 +2,16 @@ import { BRANCH_SEASONS } from "./branches";
 import { STEM_NATURES } from "./stems";
 import type { IljuEntry } from "./data";
 
-/** 동양화·수묵화 + 목판화 질감. 배경까지 한지 결이 보이게 한다. */
+/**
+ * 색은 카드에서 코드로 입히므로, 생성 단계에서는 흰 종이 위의 먹 그림만 받는다.
+ * 받은 그림은 밝기를 알파로 바꿔 투명 PNG로 저장한다(scripts/generate-ilju-images.ts).
+ */
 export const IMAGE_STYLE = [
-  "Korean traditional ink painting (sumukhwa) printed as a woodblock print.",
-  "Black sumi ink only: dry-brush strokes, wet ink bleeding into the paper, fine stipple and hatching, visible woodcut carving grain.",
-  "The whole image, background included, shows hanji mulberry paper texture: visible paper fibers, subtle specks, uneven hand-printed ink absorption, soft deckled tone.",
-  "Flat single muted background color, low saturation, no gradient gloss.",
-  "Minimal poster composition with generous empty space. No text, no letters, no seal, no signature, no people, no frame, no border.",
+  "Korean traditional ink painting (sumukhwa) printed as a woodblock print on plain white paper.",
+  "Pure black sumi ink on white only — absolutely no color anywhere, no tinted paper, no colored wash.",
+  "Ink work: dry-brush strokes, wet ink bleeding, fine stipple and hatching, visible woodcut carving grain, hand-printed feel.",
+  "Pure white background, evenly lit, no paper sheet edges, no torn or deckled edge, no margin, no vignette, no drop shadow, no frame, no border.",
+  "Minimal composition with generous empty space. No text, no letters, no seal, no signature, no people.",
 ].join(" ");
 
 /**
@@ -26,11 +29,10 @@ export function imagePrompt(entry: IljuEntry): string {
 
   return [
     IMAGE_STYLE,
-    `Background: flat ${branch.paperColor} hanji paper.`,
     `Main subject: ${stem.promptSubject}, drawn in deep black ink, large and clearly the focus.`,
-    `Setting: ${branch.promptScene}.`,
+    `Setting: ${branch.promptScene}, suggested with ink strokes only.`,
     layout,
-    "Keep the upper-left 45% of the image empty flat paper with no objects, so dark text can be placed there.",
+    "Keep the upper-left 45% of the image empty white with no ink at all, so text can be placed there.",
     "Portrait composition, 3:4 aspect ratio.",
   ].join(" ");
 }

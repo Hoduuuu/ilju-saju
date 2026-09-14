@@ -9,8 +9,9 @@ describe("imagePrompt", () => {
     const prompt = imagePrompt(entry);
     expect(prompt).toContain("a single tall majestic tree");
     expect(prompt).toContain("a still frozen lake on a deep winter night");
-    expect(prompt).toContain(BRANCH_SEASONS[entry.branch].paperColor);
-    expect(prompt).toContain("hanji");
+    // 색은 카드에서 코드로 입히므로, 생성 문구에는 배경색이 들어가지 않는다.
+    expect(prompt).not.toContain(BRANCH_SEASONS[entry.branch].paperColor);
+    expect(prompt).toContain("Pure black sumi ink on white only");
     expect(prompt).toContain("upper-left 45%");
     expect(prompt).toContain("No text, no letters");
   });

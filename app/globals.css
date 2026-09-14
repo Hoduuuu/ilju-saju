@@ -3,7 +3,7 @@
 @theme inline {
   --font-sans: "Pretendard Variable", Pretendard, var(--font-noto-kr), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-hanja: var(--font-noto-kr), "Pretendard Variable", sans-serif;
-  --color-ink: #16181d;
+  --color-ink: #1f1a1a;
   --color-sub: #5b6170;
   --color-line: #e8eaef;
   --color-canvas: #f4f5f8;
@@ -30,4 +30,20 @@ body {
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/**
+ * 한지 결 텍스처. 카드 색(paper) 위, 먹 일러스트 아래에 얹는다.
+ * feTurbulence로 만든 흑백 노이즈를 낮은 불투명도로 얹어 살짝 어둡게 더한다.
+ * mix-blend-mode(곱연산)는 쓰지 않는다 — html-to-image가 이 카드를 SVG
+ * foreignObject로 캡처해 PNG로 저장하는데(lib/export/download.ts), 여러 브라우저의
+ * foreignObject 래스터화 과정에서 mix-blend-mode가 깨지는 문제가 잘 알려져 있어
+ * 내보내기 결과가 텍스처만 사라지거나 잘못 합성될 위험이 있다. 대신 노이즈 자체가
+ * 이미 검정+가변 알파라서, 블렌드 모드 없이 그냥 얹기만 해도 같은 결을 안전하게 낸다.
+ */
+.paper-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch' result='noise'/%3E%3CfeColorMatrix in='noise' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  opacity: 0.13;
+  pointer-events: none;
 }

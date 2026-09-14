@@ -21,7 +21,7 @@ export default function SummaryCardExport({ ref, result, ilju, sentence, keyword
             <div className="flex h-full flex-col px-[72px] pt-[80px] text-ink">
               <ul className="flex flex-wrap gap-4">
                 {keywords.map((keyword) => (
-                  <li key={keyword} className="rounded-full border border-ink/15 bg-[#16181d]/8 px-7 py-2.5 text-[34px] font-semibold">
+                  <li key={keyword} className="rounded-full border border-ink/15 bg-[#1F1A1A]/8 px-7 py-2.5 text-[34px] font-semibold">
                     #{keyword}
                   </li>
                 ))}

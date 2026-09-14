@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import type { Motif as MotifKind } from "@/lib/ilju/stems";
 
-/** 이미지가 없을 때의 대체 모티프. 먹색(ink)을 두 단계 불투명도로 써서 한지 위 먹 그림처럼 보이게 한다 */
+/**
+ * 이미지가 없을 때의 대체 모티프. 실제 PNG 일러스트와 같은 먹색(artInk, #332A2A)을
+ * 두 단계 불투명도로 써서 한지 위 먹 그림처럼 보이게 한다. (호출부에서 palette.artInk를 넘긴다)
+ */
 const SHAPES: Record<MotifKind, (main: string, sub: string) => ReactNode> = {
   tree: (l, d) => (
     <g>

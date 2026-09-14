@@ -28,7 +28,8 @@ export default function IljuVisual({ ilju, rounded = true, radius = "20px", clas
       className={`relative aspect-[3/4] w-full overflow-hidden ${className}`}
       style={{ background: paperCss(ilju.palette), borderRadius: rounded ? radius : undefined }}
     >
-      {!loaded && <Motif motif={ilju.motif} ink={ilju.palette.ink} />}
+      <div aria-hidden className="paper-grain absolute inset-0" />
+      {!loaded && <Motif motif={ilju.motif} ink={ilju.palette.artInk} />}
       {hydrated && (
         /* eslint-disable-next-line @next/next/no-img-element -- PNG 저장(html-to-image) 호환을 위해 일반 img 사용 */
         <img
