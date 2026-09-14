@@ -44,7 +44,7 @@ export function buildUserPrompt(result: SajuResult, ilju: IljuEntry): string {
     .join(", ");
   return [
     "[사주 데이터]",
-    `- 출생: ${formatBirth(result)}${input.time ? " (진태양시 보정, 야자시 적용)" : ""}`,
+    `- 출생: ${formatBirth(result)}${input.time ? " (계산 기준: 진태양시 보정, 밤 11시~자정 출생은 야자시 관법)" : ""}`,
     `- 일주 ${ilju.hanja}(${ilju.korean}) — 상징: ${ilju.symbol}`,
     "- 원국",
     pillarLine("연주", pillars.year),

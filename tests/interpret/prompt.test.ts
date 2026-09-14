@@ -22,6 +22,7 @@ describe("prompt", () => {
     expect(prompt).toContain("27세 甲申(갑신) ← 현재");
     expect(prompt).toContain("2026년 세운: 丙午");
     expect(prompt).toContain("notime 섹션은 쓰지 않는다");
+    expect(prompt).toContain("계산 기준: 진태양시 보정");
   });
 
   it("시간 모름이면 notime 섹션을 요구한다", () => {
@@ -29,5 +30,6 @@ describe("prompt", () => {
     const prompt = buildUserPrompt(result, getIlju(result.iljuId)!);
     expect(prompt).toContain("시주: 모름");
     expect(prompt).toContain("notime 섹션을 반드시 쓴다");
+    expect(prompt).not.toContain("계산 기준");
   });
 });
