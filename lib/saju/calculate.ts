@@ -107,9 +107,6 @@ function pillarView(pillar: Pillar, dayStem: Pillar["heavenlyStem"], stemTenGod:
 }
 
 export function calculateSaju(input: SajuInput): SajuResult {
-  if (input.year < MIN_YEAR || input.year > MAX_YEAR) {
-    throw new SajuInputError(`${MIN_YEAR}년부터 ${MAX_YEAR}년까지만 계산할 수 있어요.`);
-  }
   const place = findPlace(input.placeId);
   if (!place) throw new SajuInputError("출생지를 다시 선택해 주세요.");
 

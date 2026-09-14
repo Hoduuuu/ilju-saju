@@ -149,4 +149,9 @@ describe("입력 오류", () => {
   it("알 수 없는 출생지", () => {
     expect(() => calculateSaju({ ...base, placeId: "mars" })).toThrow(SajuInputError);
   });
+
+  it("음력 연도가 범위 밖이어도 변환된 양력이 범위 안이면 허용", () => {
+    const r = calculateSaju({ ...base, calendar: "lunar", year: 1899, month: 12, day: 1, time: null });
+    expect(r.solarDate).toEqual({ year: 1900, month: 1, day: 1 });
+  });
 });
