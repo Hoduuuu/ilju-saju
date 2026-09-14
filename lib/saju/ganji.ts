@@ -3,6 +3,8 @@ import {
   EARTHLY_BRANCHES_HANJA,
   HEAVENLY_STEMS,
   HEAVENLY_STEMS_HANJA,
+  getEarthlyBranchElement,
+  getHeavenlyStemElement,
   type EarthlyBranch,
   type FiveElement,
   type HeavenlyStem,
@@ -11,8 +13,8 @@ import {
 export const STEM_ROMAN = ["gap", "eul", "byeong", "jeong", "mu", "gi", "gyeong", "sin", "im", "gye"] as const;
 export const BRANCH_ROMAN = ["ja", "chuk", "in", "myo", "jin", "sa", "o", "mi", "sin", "yu", "sul", "hae"] as const;
 
-export const STEM_ELEMENT: readonly FiveElement[] = ["목", "목", "화", "화", "토", "토", "금", "금", "수", "수"];
-export const BRANCH_ELEMENT: readonly FiveElement[] = ["수", "토", "목", "목", "토", "화", "화", "토", "금", "금", "토", "수"];
+export const STEM_ELEMENT: readonly FiveElement[] = HEAVENLY_STEMS.map((s) => getHeavenlyStemElement(s));
+export const BRANCH_ELEMENT: readonly FiveElement[] = EARTHLY_BRANCHES.map((b) => getEarthlyBranchElement(b));
 export const ELEMENTS: readonly FiveElement[] = ["목", "화", "토", "금", "수"];
 export const ELEMENT_HANJA: Record<FiveElement, string> = { 목: "木", 화: "火", 토: "土", 금: "金", 수: "水" };
 

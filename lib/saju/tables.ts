@@ -1,5 +1,6 @@
 import type { EarthlyBranch, HeavenlyStem } from "manseryeok";
-import { branchIndex, stemIndex } from "./ganji";
+import { getHeavenlyStemYinYang } from "manseryeok";
+import { branchIndex } from "./ganji";
 
 /** 지장간(여기 → 중기 → 정기) */
 export const HIDDEN_STEMS: Record<EarthlyBranch, HeavenlyStem[]> = {
@@ -29,7 +30,7 @@ const JANGSAENG: Record<HeavenlyStem, EarthlyBranch> = {
 export function twelveStage(dayStem: HeavenlyStem, branch: EarthlyBranch): TwelveStage {
   const start = branchIndex(JANGSAENG[dayStem]);
   const target = branchIndex(branch);
-  const isYang = stemIndex(dayStem) % 2 === 0;
+  const isYang = getHeavenlyStemYinYang(dayStem) === "양";
   const offset = isYang ? (target - start + 12) % 12 : (start - target + 12) % 12;
   return TWELVE_STAGES[offset];
 }
