@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore, type ReactNode } from "react";
 import type { IljuEntry } from "@/lib/ilju/data";
 import { paperCss } from "@/lib/ilju/palette";
-import { scrimCss, TEXT_ZONE } from "@/lib/ilju/scrim";
+import { TEXT_ZONE } from "@/lib/ilju/layout";
 import Motif from "./Motif";
 
 const noopSubscribe = () => () => {};
@@ -40,7 +40,6 @@ export default function IljuVisual({ ilju, rounded = true, radius = "20px", clas
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       )}
-      {loaded && <div aria-hidden className="absolute inset-0" style={{ background: scrimCss(ilju.palette.paper) }} />}
       <div className="absolute inset-x-0 top-0 overflow-hidden" style={{ height: `${TEXT_ZONE * 100}%` }}>
         {children}
       </div>
