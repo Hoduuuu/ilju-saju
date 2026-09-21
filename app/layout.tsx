@@ -12,9 +12,16 @@ const notoSansKr = Noto_Sans_KR({
   variable: "--font-noto-kr",
 });
 
+const SITE_TITLE = "나와 닮은 자연을 찾아볼까요";
+const SITE_DESCRIPTION = "생년월일로 만세력 사주를 계산하고, 나를 닮은 자연(일주)과 AI 풀이를 알려 드려요.";
+
 export const metadata: Metadata = {
-  title: "일주 — 만세력 사주",
-  description: "만세력으로 계산한 내 사주와 60일주 도감",
+  // 링크 미리보기 이미지 주소를 절대 주소로 만들 때 쓴다
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SHARE_BASE_URL || "https://ilju-saju.vercel.app"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: { title: SITE_TITLE, description: SITE_DESCRIPTION, siteName: "ILJU · 만세력", locale: "ko_KR", type: "website" },
+  twitter: { card: "summary_large_image", title: SITE_TITLE, description: SITE_DESCRIPTION },
 };
 
 export const viewport: Viewport = {
