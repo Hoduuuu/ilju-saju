@@ -27,3 +27,51 @@ $$;
 
 revoke all on function public.get_shared_reading(text) from public;
 grant execute on function public.get_shared_reading(text) to anon, authenticated;
+
+-- ─────────────────────────────────────────────────────────────
+-- AI 풀이 하루 사용 횟수(방문자별). 방문자는 IP를 서버 비밀값과 섞은 해시로만 저장한다.
+create table if not exists public.ai_quota (
+  visitor text not null,
+  day date not null,
+  used int not null default 0,
+  primary key (visitor, day)
+);
+alter table public.ai_quota enable row level security;
+
+-- 1회 차감. 차감 후 남은 횟수를 돌려주고, 이미 다 썼으면 -1.
+create or replace function public.consume_ai_quota(visitor_id text, quota_day date, max_uses int)
+returns int
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  used_now int;
+begin
+  insert into public.ai_quota as q (visitor, day, used)
+  values (visitor_id, quota_day, 1)
+  on conflict (visitor, day) do update set used = q.used + 1
+  where q.used < max_uses
+  returning q.used into used_now;
+  if used_now is null then
+    return -1;
+  end if;
+  return max_uses - used_now;
+end
+$$;
+
+-- 풀이가 실패했을 때 1회 되돌리기
+create or replace function public.refund_ai_quota(visitor_id text, quota_day date)
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update public.ai_quota set used = greatest(used - 1, 0)
+  where visitor = visitor_id and day = quota_day
+$$;
+
+revoke all on function public.consume_ai_quota(text, date, int) from public;
+revoke all on function public.refund_ai_quota(text, date) from public;
+grant execute on function public.consume_ai_quota(text, date, int) to anon, authenticated;
+grant execute on function public.refund_ai_quota(text, date) to anon, authenticated;

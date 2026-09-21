@@ -8,8 +8,6 @@ interface Props {
   timeKnown: boolean;
   accent: string;
   onRetry: () => void;
-  /** 제목 아래 작은 안내(공유 사이트에서 미리 만든 풀이임을 밝힐 때) */
-  note?: string;
 }
 
 const STATUS_LABEL: Record<InterpretState["status"], string> = {
@@ -19,7 +17,7 @@ const STATUS_LABEL: Record<InterpretState["status"], string> = {
   error: "",
 };
 
-export default function InterpretationSections({ state, sections, timeKnown, accent, onRetry, note }: Props) {
+export default function InterpretationSections({ state, sections, timeKnown, accent, onRetry }: Props) {
   const ids = bodySectionIds(timeKnown);
   const activeId = state.status === "streaming" ? currentSectionId(sections, ids) : null;
   const streaming = state.status === "streaming";
@@ -35,10 +33,8 @@ export default function InterpretationSections({ state, sections, timeKnown, acc
         </p>
       </div>
 
-      {note && <p className="mt-1 text-[12px] leading-relaxed text-sub">{note}</p>}
-
-      {state.error?.code === "disabled" ? (
-        // 공유 사이트: 오류가 아니라 안내라서 차분한 색으로, 빈 풀이 목록은 보여 주지 않는다
+      {state.error?.code === "disabled" || state.error?.code === "quota" ? (
+        // AI를 쓸 수 없거나 오늘 횟수를 다 쓴 경우: 오류가 아니라 안내라서 차분한 색으로, 빈 풀이 목록은 보여 주지 않는다
         <p className="mt-3 rounded-[var(--radius-card)] bg-soft px-4 py-3 text-[14px] leading-relaxed text-sub">{state.error.message}</p>
       ) : (
         <>
