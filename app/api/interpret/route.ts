@@ -3,12 +3,16 @@ import { SajuInputError, type SajuResult } from "@/lib/saju/types";
 import { getIlju } from "@/lib/ilju/data";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/interpret/prompt";
 import { runClaude } from "@/lib/interpret/runClaude";
-import type { InterpretEvent } from "@/lib/interpret/claudeEvents";
+import { ERROR_MESSAGES, type InterpretEvent } from "@/lib/interpret/claudeEvents";
+import { isShareSite } from "@/lib/share/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request): Promise<Response> {
+  // 공유 사이트(Vercel)에는 claude가 없고, 구독을 다른 사람이 쓰게 하면 안 되므로 AI를 부르지 않는다
+  if (isShareSite()) return Response.json({ code: "disabled", message: ERROR_MESSAGES.disabled }, { status: 503 });
+
   let result: SajuResult;
   try {
     result = calculateSaju(parseSajuInput(await request.json()));

@@ -17,7 +17,8 @@ import type { SajuResult } from "@/lib/saju/types";
 interface Props {
   result: SajuResult;
   ilju: IljuEntry;
-  onReset: () => void;
+  /** 없으면 다시 입력 버튼을 숨긴다(공유 링크 화면) */
+  onReset?: () => void;
   /** AI 요약 키워드. 없으면 일주 기본 키워드를 쓴다 */
   heroKeywords?: string[];
   heroSentence?: ReactNode;
@@ -58,19 +59,21 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
           <div className="mt-1.5 flex items-center gap-0.5">
             <p className="text-[13px] text-sub">{formatBirth(result)}</p>
             {/* 다시 입력: 입력 정보 옆에 아이콘만 둔다 */}
-            <button
-              type="button"
-              onClick={onReset}
-              data-export-ignore="true"
-              aria-label="다시 입력"
-              title="다시 입력"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sub transition hover:bg-chip hover:text-ink"
-            >
-              <svg aria-hidden viewBox="0 0 20 20" className="h-4 w-4">
-                <path d="M15.5 10a5.5 5.5 0 1 1-1.61-3.89" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-                <path d="M14.2 3.2v3.4h-3.4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
+            {onReset && (
+              <button
+                type="button"
+                onClick={onReset}
+                data-export-ignore="true"
+                aria-label="다시 입력"
+                title="다시 입력"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sub transition hover:bg-chip hover:text-ink"
+              >
+                <svg aria-hidden viewBox="0 0 20 20" className="h-4 w-4">
+                  <path d="M15.5 10a5.5 5.5 0 1 1-1.61-3.89" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                  <path d="M14.2 3.2v3.4h-3.4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
           </div>
 
           <InfoCard title="내 일주">

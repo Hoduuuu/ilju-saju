@@ -29,8 +29,12 @@ export function useInterpretation(input: SajuInput | null): { state: InterpretSt
           signal: controller.signal,
         });
         if (!response.ok || !response.body) {
-          const body = (await response.json().catch(() => null)) as { message?: string } | null;
-          dispatch({ type: "networkError", message: body?.message ?? "풀이 서버에 연결하지 못했어요." });
+          const body = (await response.json().catch(() => null)) as { message?: string; code?: string } | null;
+          dispatch({
+            type: "networkError",
+            message: body?.message ?? "풀이 서버에 연결하지 못했어요.",
+            code: body?.code === "disabled" ? "disabled" : undefined,
+          });
           return;
         }
         const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();

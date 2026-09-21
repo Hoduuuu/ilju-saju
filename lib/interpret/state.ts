@@ -9,7 +9,7 @@ export interface InterpretState {
 export type InterpretAction =
   | { type: "start" }
   | { type: "event"; event: InterpretEvent }
-  | { type: "networkError"; message: string };
+  | { type: "networkError"; message: string; code?: InterpretErrorCode };
 
 export const INITIAL_INTERPRET_STATE: InterpretState = { status: "idle", text: "", error: null };
 
@@ -18,7 +18,7 @@ export function interpretReducer(state: InterpretState, action: InterpretAction)
     case "start":
       return { status: "streaming", text: "", error: null };
     case "networkError":
-      return { ...state, status: "error", error: { code: "failed", message: action.message } };
+      return { ...state, status: "error", error: { code: action.code ?? "failed", message: action.message } };
     case "event": {
       const { event } = action;
       if (event.type === "text") return { ...state, status: "streaming", text: state.text + event.text };
