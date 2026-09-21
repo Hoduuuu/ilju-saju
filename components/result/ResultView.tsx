@@ -70,7 +70,6 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
           <InfoCard title="내 일주">
             <p className="text-[16px] font-bold">
               <span className="font-hanja">{ilju.hanja}</span> {ilju.korean}일주
-              <span className="ml-1.5 text-[13px] font-semibold text-sub">{ilju.symbol}</span>
             </p>
             <p className="mt-2 text-[14px] leading-relaxed">{ilju.description}</p>
             <p className="mt-3 text-[12px] font-semibold text-sub">
