@@ -30,7 +30,7 @@ function InlineRadioGroup<T extends string>(props: {
       {props.options.map((option) => {
         const selected = props.value === option.value;
         return (
-          <label key={option.value} className="flex cursor-pointer items-center">
+          <label key={option.value} className="group flex cursor-pointer items-center">
             <input
               type="radio"
               name={props.name}
@@ -38,10 +38,10 @@ function InlineRadioGroup<T extends string>(props: {
               checked={selected}
               onChange={() => props.onChange(option.value)}
             />
-            <span className="flex items-center gap-1.5 rounded peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink">
+            <span className="flex items-center gap-1.5 rounded peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-key">
               <span
                 aria-hidden
-                className={`h-3 w-3 rounded-full transition ${selected ? "bg-ink ring-2 ring-ink/15" : "border border-line"}`}
+                className={`h-3 w-3 rounded-full transition ${selected ? "bg-key ring-2 ring-key/15" : "border border-line group-hover:border-sub"}`}
               />
               <span className={`text-[13px] ${selected ? "font-semibold text-ink" : "text-sub"}`}>{option.label}</span>
             </span>
@@ -94,10 +94,13 @@ function InputFormFields({ initial }: { initial: FormValues }) {
   const timeEnabled = values.timeKnown;
 
   return (
-    <form onSubmit={onSubmit} noValidate className="mt-6 flex flex-col gap-4">
+    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       <div>
         <div className="flex items-center justify-between">
-          <p className="text-[13px] font-semibold">성별</p>
+          <p className="flex items-center gap-1.5 text-[13px] font-semibold">
+            <span aria-hidden className="text-[15px] leading-none">👤</span>
+            성별
+          </p>
           <InlineRadioGroup
             label="성별"
             name="gender"
@@ -115,7 +118,10 @@ function InputFormFields({ initial }: { initial: FormValues }) {
 
       <div>
         <div className="flex items-center justify-between">
-          <p className="text-[13px] font-semibold">생년월일</p>
+          <p className="flex items-center gap-1.5 text-[13px] font-semibold">
+            <span aria-hidden className="text-[15px] leading-none">🎂</span>
+            생년월일
+          </p>
           <InlineRadioGroup
             label="달력"
             name="calendar"
@@ -158,7 +164,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
 
         {values.calendar === "lunar" && (
           <label className="mt-2 flex items-center gap-2 text-[13px]">
-            <input type="checkbox" className="h-4 w-4 accent-[#16181d]" checked={values.isLeapMonth} onChange={(e) => update("isLeapMonth", e.target.checked)} />
+            <input type="checkbox" className="h-4 w-4 accent-[#312929]" checked={values.isLeapMonth} onChange={(e) => update("isLeapMonth", e.target.checked)} />
             윤달이에요
           </label>
         )}
@@ -166,11 +172,14 @@ function InputFormFields({ initial }: { initial: FormValues }) {
 
       <div>
         <div className="flex items-center justify-between">
-          <p className="text-[13px] font-semibold">태어난 시간</p>
+          <p className="flex items-center gap-1.5 text-[13px] font-semibold">
+            <span aria-hidden className="text-[15px] leading-none">🕰️</span>
+            태어난 시간
+          </p>
           <label className="flex items-center gap-2 text-[13px]">
             <input
               type="checkbox"
-              className="h-4 w-4 accent-[#16181d]"
+              className="h-4 w-4 accent-[#312929]"
               checked={!timeEnabled}
               onChange={(e) => update("timeKnown", !e.target.checked)}
             />
@@ -195,15 +204,22 @@ function InputFormFields({ initial }: { initial: FormValues }) {
                   onChange={(e) => update("placeId", e.target.value)}
                   className={`${inputClass} appearance-none pr-5`}
                 >
-                  {PLACE_GROUPS.map((group) => (
-                    <optgroup key={group.province} label={group.province}>
-                      {group.places.map((place) => (
-                        <option key={place.id} value={place.id}>
-                          {place.city}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
+                  {PLACE_GROUPS.map((group) =>
+                    // 시·도 이름과 도시 이름이 같은 한 곳(서울, 부산 등)은 묶음 제목 없이 한 줄로만 보여 준다
+                    group.places.length === 1 && group.places[0].city === group.province ? (
+                      <option key={group.places[0].id} value={group.places[0].id}>
+                        {group.province}
+                      </option>
+                    ) : (
+                      <optgroup key={group.province} label={group.province}>
+                        {group.places.map((place) => (
+                          <option key={place.id} value={place.id}>
+                            {place.city}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ),
+                  )}
                 </select>
                 <span aria-hidden className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-[12px] text-sub">
                   ▾
@@ -230,7 +246,7 @@ function InputFormFields({ initial }: { initial: FormValues }) {
 
       <button
         type="submit"
-        className="h-11 w-full rounded-full bg-ink text-[14px] font-bold text-white transition active:scale-[0.99]"
+        className="h-11 w-full rounded-[var(--radius-control)] bg-key text-[14px] font-bold text-white transition hover:bg-key-hover active:scale-[0.99]"
       >
         내 일주 보기
       </button>

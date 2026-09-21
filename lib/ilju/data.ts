@@ -42,7 +42,7 @@ export const ILJU_LIST: IljuEntry[] = sixtyGanji().map(({ stem, branch }, order)
     keywords: [...nature.keywords, season.keyword],
     description: `${nature.trait} ${season.trait}`,
     motif: nature.motif,
-    palette: paletteFor(nature, season),
+    palette: paletteFor(),
   };
 });
 

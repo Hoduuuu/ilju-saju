@@ -76,15 +76,23 @@ export async function downloadElementAsPng(node: HTMLElement, fileName: string, 
   const { toPng } = await import("html-to-image");
   await document.fonts.ready;
   await waitForImagesLoaded(node);
-  const pixelRatio = computePixelRatio(node.scrollHeight, Boolean(size));
-  const dataUrl = await toPng(node, {
-    cacheBust: true,
-    backgroundColor: "#ffffff",
-    pixelRatio,
-    width: size?.width,
-    height: size?.height,
-    filter: (element) => !(element instanceof HTMLElement && element.dataset.exportIgnore === "true"),
-  });
+  // 접힌 풀이(<details>)도 이미지에 담기도록 캡처하는 동안만 모두 펼친다
+  const closed = Array.from(node.querySelectorAll("details")).filter((details) => !details.open);
+  closed.forEach((details) => (details.open = true));
+  let dataUrl: string;
+  try {
+    const pixelRatio = computePixelRatio(node.scrollHeight, Boolean(size));
+    dataUrl = await toPng(node, {
+      cacheBust: true,
+      backgroundColor: "#ffffff",
+      pixelRatio,
+      width: size?.width,
+      height: size?.height,
+      filter: (element) => !(element instanceof HTMLElement && element.dataset.exportIgnore === "true"),
+    });
+  } finally {
+    closed.forEach((details) => (details.open = false));
+  }
   if (!isUsablePngDataUrl(dataUrl)) {
     throw new Error(`PNG 캡처 결과가 비어 있어요 (length=${dataUrl?.length ?? 0})`);
   }

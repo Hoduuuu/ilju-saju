@@ -1,22 +1,12 @@
-import type { StemNature } from "./stems";
-import type { BranchSeason } from "./branches";
-
 export interface IljuPalette {
+  /** 카드 배경. 모든 일주가 같은 밝은 회색을 쓰고, 일주 차이는 일러스트 색으로 낸다 */
   paper: string;
-  /** 카드(paper) 위에 놓이는 텍스트 색. 가장 어두운 카드(#6E8EE0)에서도 4.5:1을 만족한다 */
+  /** 카드 위 텍스트 색(카드 배경 대비 4.5:1 이상) */
   ink: string;
-  /** 먹 일러스트(PNG)의 잉크 색과 맞춘 모티프 대체 그림용 색 */
-  artInk: string;
 }
 
-export function paletteFor(_stem: StemNature, branch: BranchSeason): IljuPalette {
-  return {
-    paper: branch.paperColor,
-    ink: "#1F1A1A",
-    artInk: "#332A2A",
-  };
-}
+export const CARD_PAPER = "#F8F8F8";
 
-export function paperCss(p: IljuPalette): string {
-  return p.paper;
+export function paletteFor(): IljuPalette {
+  return { paper: CARD_PAPER, ink: "#1F1A1A" };
 }

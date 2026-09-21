@@ -36,13 +36,13 @@ export default function InterpretationSections({ state, sections, timeKnown, acc
       {state.error && (
         <div role="alert" className="mt-3 rounded-xl bg-[#fdecea] px-4 py-3 text-[14px] font-medium text-[#9f2a24]">
           <p>{state.error.message}</p>
-          <button type="button" data-export-ignore="true" onClick={onRetry} className="mt-2 h-9 rounded-full bg-white px-4 text-[14px] font-bold text-[#9f2a24]">
+          <button type="button" data-export-ignore="true" onClick={onRetry} className="mt-2 h-9 rounded-[var(--radius-control)] bg-white px-4 text-[14px] font-bold text-[#9f2a24] transition hover:bg-[#fff7f6]">
             다시 시도
           </button>
         </div>
       )}
 
-      <ol className="mt-3 flex flex-col gap-3">
+      <ol className="mt-3 flex flex-col gap-2">
         {ids.map((id, i) => (
           <SectionCard
             key={id}
@@ -52,6 +52,7 @@ export default function InterpretationSections({ state, sections, timeKnown, acc
             writing={activeId === id}
             waiting={streaming && !sections[id]}
             accent={accent}
+            defaultOpen={i === 0}
           />
         ))}
         {sections.extra && <SectionCard index={ids.length + 1} title="추가 풀이" body={sections.extra} writing={false} waiting={false} accent={accent} />}

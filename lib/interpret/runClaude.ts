@@ -65,7 +65,8 @@ export function runClaude(options: RunClaudeOptions, onEvent: (event: InterpretE
       resolve();
     };
 
-    const child = spawn(options.bin ?? process.env.CLAUDE_BIN ?? "claude", buildClaudeArgs(options.systemPrompt, options.model ?? "sonnet"), {
+    // 실행 파일 경로가 동적이라 빌드가 프로젝트 전체를 서버 번들에 넣으려 한다. 파일 추적에서 제외한다.
+    const child = spawn(/*turbopackIgnore: true*/ options.bin ?? process.env.CLAUDE_BIN ?? "claude", buildClaudeArgs(options.systemPrompt, options.model ?? "sonnet"), {
       cwd: workDir,
       env,
       stdio: ["pipe", "pipe", "pipe"],

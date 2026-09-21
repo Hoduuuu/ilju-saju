@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import IljuVisual from "@/components/ilju/IljuVisual";
+import KeywordRow from "@/components/ilju/KeywordRow";
 import { ILJU_LIST, getIlju } from "@/lib/ilju/data";
 import { ELEMENT_HANJA } from "@/lib/saju/ganji";
 import { ELEMENT_NAMES } from "@/lib/view/elements";
@@ -25,26 +26,21 @@ export default async function IljuDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <main className="px-5 pb-10 pt-4">
-      <Link href="/ilju" className="inline-flex h-11 items-center text-[14px] font-semibold text-sub">
+      <Link href="/ilju" className="inline-flex h-11 items-center text-[14px] font-semibold text-sub transition hover:text-ink">
         ← 도감으로
       </Link>
 
-      <IljuVisual ilju={entry} className="mt-1">
-        <div className="flex h-full flex-col px-6 pt-6 text-ink">
-          <ul className="flex flex-wrap gap-1.5">
-            {entry.keywords.map((keyword) => (
-              <li key={keyword} className="rounded-full border border-ink/15 bg-[#1F1A1A]/8 px-3 py-1 text-[12px] font-semibold">
-                #{keyword}
-              </li>
-            ))}
-          </ul>
-          <h1 className="mt-3">
-            <span aria-hidden className="block font-hanja text-[clamp(52px,17vw,64px)] font-black leading-none tracking-[-0.04em]">
+      <IljuVisual ilju={entry} marker={false} objectScale={0.8} className="mt-1 shadow-[var(--shadow-card)]">
+        <div className="flex flex-1 flex-col px-6 pt-5 text-ink">
+          <KeywordRow keywords={entry.keywords} branch={entry.branch} />
+          {/* 글자는 오른쪽에 좌우 여백의 2배(48px)를 남긴다 */}
+          <h1 className="mt-6 shrink-0 pr-6">
+            <span aria-hidden className="block font-hanja text-[clamp(52px,17vw,64px)] font-black leading-[1.2] tracking-[-0.04em]">
               {entry.hanja}
             </span>
-            <span className="mt-3 block text-[20px] font-bold">{entry.korean}일주</span>
+            <span className="mt-1 block text-[20px] font-bold">{entry.korean}일주</span>
           </h1>
-          <p className="mt-1 text-[15px] font-medium">{entry.symbol}</p>
+          <p className="mt-1 shrink-0 pr-6 text-[15px] font-medium">{entry.symbol}</p>
         </div>
       </IljuVisual>
 
@@ -72,7 +68,7 @@ export default async function IljuDetailPage({ params }: { params: Promise<{ id:
           { label: "이전", item: prev },
           { label: "다음", item: next },
         ].map(({ label, item }) => (
-          <Link key={label} href={`/ilju/${item.id}`} className="rounded-2xl border border-line px-4 py-3">
+          <Link key={label} href={`/ilju/${item.id}`} className="rounded-[var(--radius-card)] bg-chip px-4 py-3 transition hover:bg-chip-hover">
             <span className="block text-[12px] font-semibold text-sub">{label}</span>
             <span className="mt-0.5 block text-[15px] font-bold">
               <span className="font-hanja">{item.hanja}</span> {item.korean}

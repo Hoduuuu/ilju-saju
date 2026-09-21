@@ -8,6 +8,17 @@
   --color-line: #e8eaef;
   --color-canvas: #f4f5f8;
   --color-soft: #f6f7f9;
+  /* 키컬러: 선택된 칩, CTA, 라디오·체크박스, 내 일주 테두리. 바꿀 때 여기만 고친다 */
+  --color-key: #312929;
+  --color-key-hover: #1f1818;
+  --color-chip: #f4f4f4;
+  --color-chip-hover: #eaeaea;
+  /* 일주 카드 배경 */
+  --color-card: #f8f8f8;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --shadow-card: 0 1px 2px rgb(49 41 41 / 0.05), 0 4px 14px rgb(49 41 41 / 0.06);
+  --shadow-card-hover: 0 2px 4px rgb(49 41 41 / 0.06), 0 10px 24px rgb(49 41 41 / 0.1);
 }
 
 html {
@@ -15,8 +26,17 @@ html {
   color: var(--color-ink);
 }
 
+/* 키보드로 이동할 때만 보이는 포커스 테두리 */
+:focus-visible {
+  outline: 2px solid var(--color-key);
+  outline-offset: 2px;
+}
+
 body {
   font-family: var(--font-sans);
+  /* 한글도 단어(띄어쓰기) 단위로만 줄바꿈한다. 너무 긴 단어만 예외로 쪼갠다 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
 }
@@ -32,18 +52,3 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/**
- * 한지 결 텍스처. 카드 색(paper) 위, 먹 일러스트 아래에 얹는다.
- * feTurbulence로 만든 흑백 노이즈를 낮은 불투명도로 얹어 살짝 어둡게 더한다.
- * mix-blend-mode(곱연산)는 쓰지 않는다 — html-to-image가 이 카드를 SVG
- * foreignObject로 캡처해 PNG로 저장하는데(lib/export/download.ts), 여러 브라우저의
- * foreignObject 래스터화 과정에서 mix-blend-mode가 깨지는 문제가 잘 알려져 있어
- * 내보내기 결과가 텍스처만 사라지거나 잘못 합성될 위험이 있다. 대신 노이즈 자체가
- * 이미 검정+가변 알파라서, 블렌드 모드 없이 그냥 얹기만 해도 같은 결을 안전하게 낸다.
- */
-.paper-grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch' result='noise'/%3E%3CfeColorMatrix in='noise' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 120px 120px;
-  opacity: 0.13;
-  pointer-events: none;
-}

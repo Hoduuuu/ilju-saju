@@ -47,7 +47,8 @@ export function parseSummary(body: string): { keywords: string[]; sentence: stri
     ? keywordLine
         .replace(/^키워드\s*[:：]\s*/, "")
         .split(",")
-        .map((k) => k.trim().replace(/^#/, ""))
+        // "단단한 책임감"처럼 꾸미는 말이 붙어 오면 마지막 명사("책임감")만 남긴다
+        .map((k) => k.trim().replace(/^#/, "").split(/\s+/).at(-1) ?? "")
         .filter(Boolean)
         .slice(0, 3)
     : [];

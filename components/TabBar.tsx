@@ -24,7 +24,7 @@ export default function TabBar() {
               href={tab.href}
               aria-current={active ? "page" : undefined}
               className={`flex h-16 flex-1 flex-col items-center justify-center gap-1 text-[13px] font-semibold ${
-                active ? "text-ink" : "text-sub"
+                active ? "text-ink" : "text-sub transition hover:text-ink"
               }`}
             >
               <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${active ? "bg-ink" : "bg-transparent"}`} />

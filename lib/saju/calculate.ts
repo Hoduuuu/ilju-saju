@@ -183,6 +183,8 @@ export function calculateSaju(input: SajuInput): SajuResult {
     branch: lp.pillar.earthlyBranch,
     hanja: stemHanja(lp.pillar.heavenlyStem) + branchHanja(lp.pillar.earthlyBranch),
     korean: lp.korean,
+    stemTenGod: getTenGod(dayStem, lp.pillar.heavenlyStem),
+    branchTenGod: getBranchTenGod(dayStem, lp.pillar.earthlyBranch),
   }));
   const ageInSeunYear = SEUN_YEAR - solar.year;
   let currentDaeunIndex: number | null = null;

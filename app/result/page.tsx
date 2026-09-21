@@ -89,7 +89,7 @@ export default function ResultPage() {
               type="button"
               disabled={!canSave}
               onClick={() => save("summary")}
-              className="h-12 rounded-full bg-ink text-[15px] font-bold text-white disabled:bg-[#c9cdd6]"
+              className="h-12 rounded-[var(--radius-control)] bg-key text-[15px] font-bold text-white transition hover:bg-key-hover disabled:bg-[#E4E1E1] disabled:text-[#9A9494]"
             >
               {saving === "summary" ? "저장 중…" : "요약 카드 저장"}
             </button>
@@ -97,7 +97,7 @@ export default function ResultPage() {
               type="button"
               disabled={!canSave}
               onClick={() => save("full")}
-              className="h-12 rounded-full border border-line text-[15px] font-bold text-ink disabled:text-[#9aa0ab]"
+              className="h-12 rounded-[var(--radius-control)] bg-chip text-[15px] font-bold text-ink transition hover:bg-chip-hover disabled:text-[#9A9494] disabled:hover:bg-chip"
             >
               {saving === "full" ? "저장 중…" : "전체 결과 저장"}
             </button>

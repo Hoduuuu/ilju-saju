@@ -2,11 +2,11 @@ import type { FiveElement } from "manseryeok";
 import { ELEMENTS, ELEMENT_HANJA } from "@/lib/saju/ganji";
 
 export const ELEMENT_COLORS: Record<FiveElement, string> = {
-  목: "#3f8f4e",
-  화: "#d9483b",
-  토: "#b7832f",
-  금: "#8a8f98",
-  수: "#2f6fd1",
+  목: "#34b35a",
+  화: "#f2553f",
+  토: "#e3a33b",
+  금: "#a7b1bf",
+  수: "#3a8bf0",
 };
 
 export const ELEMENT_NAMES: Record<FiveElement, string> = { 목: "나무", 화: "불", 토: "흙", 금: "쇠", 수: "물" };

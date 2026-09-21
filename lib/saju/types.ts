@@ -34,6 +34,9 @@ export interface DaeunView {
   branch: EarthlyBranch;
   hanja: string;
   korean: string;
+  /** 일간 기준 이 대운 천간·지지의 십신 */
+  stemTenGod: TenGod;
+  branchTenGod: TenGod;
 }
 
 export interface SajuWarning {

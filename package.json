@@ -7,11 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run",
-    "images:sample": "tsx scripts/generate-ilju-images.ts --sample",
-    "images:all": "tsx scripts/generate-ilju-images.ts --all",
-    "images:only": "tsx scripts/generate-ilju-images.ts --only",
-    "images:check": "tsx scripts/check-ilju-contrast.ts"
+    "test": "vitest run"
   },
   "dependencies": {
     "html-to-image": "1.11.13",
@@ -28,9 +24,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
-    "sharp": "0.35.4",
     "tailwindcss": "^4",
-    "tsx": "4.23.13",
     "typescript": "^5",
     "vitest": "5.0.0"
   }

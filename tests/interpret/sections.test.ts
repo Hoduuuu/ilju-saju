@@ -27,6 +27,10 @@ describe("parseSummary", () => {
       sentence: "겨울 호수 곁의 큰 나무 같은 사람",
     });
   });
+
+  it("꾸미는 말이 붙은 키워드는 마지막 명사만 남긴다", () => {
+    expect(parseSummary("키워드: 깊은 사색, 단단한 책임감, 다정한 거리두기\n문장").keywords).toEqual(["사색", "책임감", "거리두기"]);
+  });
 });
 
 describe("섹션 순서", () => {

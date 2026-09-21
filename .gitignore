@@ -48,3 +48,5 @@ public/ilju/_sample-*.png
 
 # 사용자 로컬 Claude 설정
 .claude/settings.local.json
+# 예전 AI 일러스트 PNG(지금은 lib/ilju/motifs.ts에서 코드로 그림). 로컬 보관용이라 올리지 않는다
+public/ilju/
