@@ -54,7 +54,8 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
           </h2>
           {/* 서브 타이틀: AI가 쓴 한 문장. 풀이가 오기 전에는 자리만 잡아 둔다 */}
           {heroSentence && <p className="mt-1.5 text-[15px] font-medium leading-snug text-ink/80">{heroSentence}</p>}
-          <div className="mt-1.5 flex items-center gap-2">
+          {/* 버튼(28px) 안에서 아이콘(16px) 좌우로 6px씩 여백이 있어, 2px만 띄우면 글자와 아이콘 사이가 보이는 대로 8px이 된다 */}
+          <div className="mt-1.5 flex items-center gap-0.5">
             <p className="text-[13px] text-sub">{formatBirth(result)}</p>
             {/* 다시 입력: 입력 정보 옆에 아이콘만 둔다 */}
             <button
