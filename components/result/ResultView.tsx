@@ -8,7 +8,6 @@ import PillarGrid from "./PillarGrid";
 import ElementBar from "./ElementBar";
 import DaeunStrip from "./DaeunStrip";
 import SeunCard from "./SeunCard";
-import Link from "next/link";
 import { formatBirth } from "@/lib/view/birth";
 import { ELEMENT_HANJA } from "@/lib/saju/ganji";
 import { ELEMENT_NAMES } from "@/lib/view/elements";
@@ -55,7 +54,7 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
           </h2>
           {/* 서브 타이틀: AI가 쓴 한 문장. 풀이가 오기 전에는 자리만 잡아 둔다 */}
           {heroSentence && <p className="mt-1.5 text-[15px] font-medium leading-snug text-ink/80">{heroSentence}</p>}
-          <div className="mt-1.5 flex items-center gap-1">
+          <div className="mt-1.5 flex items-center gap-2">
             <p className="text-[13px] text-sub">{formatBirth(result)}</p>
             {/* 다시 입력: 입력 정보 옆에 아이콘만 둔다 */}
             <button
@@ -81,13 +80,6 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
             <p className="mt-3 text-[12px] font-semibold text-sub">
               <span className="font-hanja">{ELEMENT_HANJA[ilju.element]}</span> {ELEMENT_NAMES[ilju.element]} · {ilju.season} · {ilju.yinYang}
             </p>
-            <Link
-              href={`/ilju/${ilju.id}`}
-              data-export-ignore="true"
-              className="mt-3 inline-flex h-9 items-center rounded-[var(--radius-control)] bg-white px-3 text-[13px] font-semibold text-ink transition hover:bg-chip-hover"
-            >
-              도감에서 자세히 보기 →
-            </Link>
           </InfoCard>
 
           {result.warnings.length > 0 && (
