@@ -50,22 +50,28 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
         </IljuVisual>
 
         <section aria-labelledby="sheet-title" className="relative -mt-8 rounded-t-[28px] bg-white px-5 pb-8 pt-6">
-          <div className="flex items-center justify-between gap-3">
-            <h2 id="sheet-title" className="text-[18px] font-extrabold tracking-[-0.02em]">
-              {result.input.name}님의 사주
-            </h2>
+          <h2 id="sheet-title" className="text-[18px] font-extrabold tracking-[-0.02em]">
+            {result.input.name}님의 사주
+          </h2>
+          {/* 서브 타이틀: AI가 쓴 한 문장. 풀이가 오기 전에는 자리만 잡아 둔다 */}
+          {heroSentence && <p className="mt-1.5 text-[15px] font-medium leading-snug text-ink/80">{heroSentence}</p>}
+          <div className="mt-1.5 flex items-center gap-1">
+            <p className="text-[13px] text-sub">{formatBirth(result)}</p>
+            {/* 다시 입력: 입력 정보 옆에 아이콘만 둔다 */}
             <button
               type="button"
               onClick={onReset}
               data-export-ignore="true"
-              className="h-9 shrink-0 rounded-[var(--radius-control)] px-3 text-[14px] font-semibold text-sub transition hover:bg-chip hover:text-ink"
+              aria-label="다시 입력"
+              title="다시 입력"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sub transition hover:bg-chip hover:text-ink"
             >
-              다시 입력
+              <svg aria-hidden viewBox="0 0 20 20" className="h-4 w-4">
+                <path d="M15.5 10a5.5 5.5 0 1 1-1.61-3.89" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                <path d="M14.2 3.2v3.4h-3.4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
           </div>
-          {/* 서브 타이틀: AI가 쓴 한 문장. 풀이가 오기 전에는 자리만 잡아 둔다 */}
-          {heroSentence && <p className="mt-1.5 text-[15px] font-medium leading-snug text-ink/80">{heroSentence}</p>}
-          <p className="mt-1.5 text-[13px] text-sub">{formatBirth(result)}</p>
 
           <InfoCard title="내 일주">
             <p className="text-[16px] font-bold">
