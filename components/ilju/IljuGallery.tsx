@@ -35,7 +35,7 @@ export default function IljuGallery({ entries }: { entries: IljuEntry[] }) {
   const visible = filterByElement(entries, filter);
 
   return (
-    <main className="px-5 pb-10 pt-8">
+    <main className="px-5 pb-6 pt-8">
       <p className="text-[12px] font-bold tracking-[0.08em] text-sub">60일주 도감</p>
       <h1 className="mt-2 text-[22px] font-extrabold leading-[1.25] tracking-[-0.03em]">
         60가지 자연 중

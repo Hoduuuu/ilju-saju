@@ -25,7 +25,7 @@ export default async function IljuDetailPage({ params }: { params: Promise<{ id:
   const next = ILJU_LIST[(entry.order + 1) % 60];
 
   return (
-    <main className="px-5 pb-10 pt-4">
+    <main className="px-5 pb-6 pt-4">
       <Link href="/ilju" className="inline-flex h-11 items-center text-[14px] font-semibold text-sub transition hover:text-ink">
         ← 도감으로
       </Link>

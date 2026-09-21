@@ -49,7 +49,7 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
           </div>
         </IljuVisual>
 
-        <section aria-labelledby="sheet-title" className="relative -mt-8 rounded-t-[28px] bg-white px-5 pb-8 pt-6">
+        <section aria-labelledby="sheet-title" className="relative -mt-8 rounded-t-[28px] bg-white px-5 pb-6 pt-6">
           <h2 id="sheet-title" className="text-[18px] font-extrabold tracking-[-0.02em]">
             {result.input.name}님의 사주
           </h2>

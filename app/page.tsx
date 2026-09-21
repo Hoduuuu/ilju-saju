@@ -4,11 +4,11 @@ import { CARD_PAPER } from "@/lib/ilju/palette";
 
 /**
  * 결과 화면 히어로와 같은 뼈대: 위 텍스트 → 가운데 그래픽 → 아래에서 겹쳐 올라오는 흰 입력 시트.
- * 한 화면 안에 들어오도록 그래픽 높이가 남는 공간에 맞춰 늘고 준다(하단 탭 여백 6rem 제외).
+ * 한 화면 안에 들어오도록 그래픽 높이가 남는 공간에 맞춰 늘고 준다(하단 탭 높이 제외).
  */
 export default function HomePage() {
   return (
-    <main className="flex min-h-[calc(100dvh-6rem)] flex-col">
+    <main className="flex min-h-[calc(100dvh-4rem-1px-env(safe-area-inset-bottom))] flex-col">
       <section className="flex min-h-0 flex-1 flex-col" style={{ background: CARD_PAPER }}>
         <div className="px-5 pt-8">
           <p className="text-[12px] font-bold tracking-[0.08em] text-sub">ILJU · 만세력</p>
@@ -20,7 +20,7 @@ export default function HomePage() {
           <IljuCarousel className="min-h-0 flex-1" />
         </div>
       </section>
-      <section aria-label="생년월일 입력" className="relative -mt-8 rounded-t-[28px] bg-white px-5 pb-8 pt-6">
+      <section aria-label="생년월일 입력" className="relative -mt-8 rounded-t-[28px] bg-white px-5 pb-6 pt-6">
         <InputForm />
       </section>
     </main>

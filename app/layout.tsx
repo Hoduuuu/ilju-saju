@@ -34,7 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" className={notoSansKr.variable}>
       <body>
-        <div className="mx-auto min-h-dvh max-w-[430px] bg-white pb-24 shadow-[0_0_0_1px_var(--color-line)]">
+        {/* 아래 여백 = 하단 탭(64px + 테두리 1px + 아이폰 홈 표시줄 영역)만큼만. 그 이상은 빈 공간이 된다 */}
+        <div className="mx-auto min-h-dvh max-w-[430px] bg-white pb-[calc(4rem+1px+env(safe-area-inset-bottom))] shadow-[0_0_0_1px_var(--color-line)]">
           {children}
         </div>
         <TabBar />
