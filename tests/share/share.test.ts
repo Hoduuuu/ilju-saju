@@ -64,3 +64,26 @@ describe("POST /api/share (로컬)", () => {
     expect(JSON.parse(init.body as string)).toMatchObject({ id, input: { name: "테스트" } });
   });
 });
+
+describe("공유 사이트의 미리 만든 풀이", () => {
+  const gyeYu = { name: "테스트", calendar: "solar", isLeapMonth: false, year: 1994, month: 8, day: 15, time: { hour: 14, minute: 33 }, gender: "female", placeId: "bucheon" };
+
+  it("미리 만든 일주 풀이가 있으면 원국 계산 섹션을 붙여 흘려보낸다", async () => {
+    process.env.VERCEL = "1";
+    const response = await interpretPost(request("http://localhost/api/interpret", gyeYu));
+    expect(response.status).toBe(200);
+    const events = (await response.text()).trim().split("\n").map((line) => JSON.parse(line));
+    expect(events.at(-1)).toEqual({ type: "done" });
+    const text: string = events[0].text;
+    for (const id of ["summary", "nature", "elements", "work", "relation", "daeun", "year"]) expect(text).toContain(`## [${id}]`);
+    expect(text).not.toContain("## [notime]");
+    expect(text).toContain("戊辰 대운");
+  });
+
+  it("시간을 모르면 notime 안내가 붙는다", async () => {
+    process.env.VERCEL = "1";
+    const response = await interpretPost(request("http://localhost/api/interpret", { ...gyeYu, time: null }));
+    const text: string = JSON.parse((await response.text()).split("\n")[0]).text;
+    expect(text).toContain("## [notime]");
+  });
+});

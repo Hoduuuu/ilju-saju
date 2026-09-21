@@ -13,6 +13,9 @@ import { parseSections, parseSummary } from "@/lib/interpret/sections";
 import { useInterpretation } from "@/lib/interpret/useInterpretation";
 import { downloadElementAsPng, exportFileName } from "@/lib/export/download";
 
+/** Vercel에 배포된 공유 사이트인지. Vercel이 빌드할 때 자동으로 넣어 주는 값이다 */
+const ON_SHARE_SITE = Boolean(process.env.NEXT_PUBLIC_VERCEL_ENV);
+
 export default function ResultPage() {
   const router = useRouter();
   const stored = useStoredInput();
@@ -111,7 +114,14 @@ export default function ResultPage() {
           router.push("/");
         }}
       >
-        <InterpretationSections state={state} sections={sections} timeKnown={input.time !== null} accent={ilju.palette.ink} onRetry={retry} />
+        <InterpretationSections
+          state={state}
+          sections={sections}
+          timeKnown={input.time !== null}
+          accent={ilju.palette.ink}
+          onRetry={retry}
+          note={ON_SHARE_SITE ? "일주별로 미리 만든 AI 풀이에, 내 사주로 계산한 오행·대운 풀이를 더했어요." : undefined}
+        />
 
         <div data-export-ignore="true" className="mt-6">
           <div className="grid grid-cols-2 gap-2">
@@ -137,7 +147,7 @@ export default function ResultPage() {
           </p>
 
           {/* 공유 링크: 로컬에서만 만든다. 공유 사이트에서는 AI 풀이가 없어 보여 주지 않는다 */}
-          {state.error?.code !== "disabled" && (
+          {!ON_SHARE_SITE && state.error?.code !== "disabled" && (
             <div className="mt-5 rounded-[var(--radius-card)] bg-soft p-4">
               <p className="text-[13px] font-semibold text-ink">공유 링크</p>
               <p className="mt-1 text-[12px] leading-relaxed text-sub">결과와 풀이를 저장해서 링크로 보여 줄 수 있어요. 링크를 아는 사람만 볼 수 있어요.</p>
