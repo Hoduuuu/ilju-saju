@@ -12,7 +12,7 @@ class MemoryStorage implements Storage {
   setItem(key: string, value: string) { this.map.set(key, value); }
 }
 
-const input: SajuInput = { calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "female", placeId: "seoul" };
+const input: SajuInput = { name: "테스트", calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "female", placeId: "seoul" };
 
 describe("storage", () => {
   let store: MemoryStorage;

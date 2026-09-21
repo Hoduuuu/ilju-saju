@@ -3,7 +3,7 @@ import { calculateSaju } from "@/lib/saju/calculate";
 import { pillarColumns } from "@/lib/view/pillars";
 import type { SajuInput } from "@/lib/saju/types";
 
-const input: SajuInput = { calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "male", placeId: "seoul" };
+const input: SajuInput = { name: "테스트", calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "male", placeId: "seoul" };
 
 describe("pillarColumns", () => {
   it("시·일·월·연 순서이고 일주를 강조한다", () => {

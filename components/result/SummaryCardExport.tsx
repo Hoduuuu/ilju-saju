@@ -32,7 +32,10 @@ export default function SummaryCardExport({ ref, result, ilju, sentence, keyword
           </IljuVisual>
         </div>
         <div className="flex flex-1 flex-col justify-between px-[72px] py-[56px]">
-          <p className="text-[44px] font-bold leading-[1.45] tracking-[-0.02em] text-ink">{sentence}</p>
+          <div>
+            <p className="text-[34px] font-bold text-sub">{result.input.name}님의 사주</p>
+            <p className="mt-3 text-[44px] font-bold leading-[1.45] tracking-[-0.02em] text-ink">{sentence}</p>
+          </div>
           <div className="flex items-end justify-between">
             <div className="flex gap-5">
               {pillarColumns(result).map((col) => (

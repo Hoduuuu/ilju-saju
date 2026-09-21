@@ -1,8 +1,9 @@
-import { calculateSaju } from "@/lib/saju/calculate";
+import { calculateSaju, normalizeName } from "@/lib/saju/calculate";
 import { DEFAULT_PLACE_ID } from "@/lib/saju/places";
 import { SajuInputError, type SajuInput } from "@/lib/saju/types";
 
 export interface FormValues {
+  name: string;
   calendar: "solar" | "lunar";
   isLeapMonth: boolean;
   year: string;
@@ -17,6 +18,7 @@ export interface FormValues {
 export type FormErrors = Partial<Record<keyof FormValues | "form", string>>;
 
 export const EMPTY_FORM: FormValues = {
+  name: "",
   calendar: "solar",
   isLeapMonth: false,
   year: "",
@@ -32,6 +34,8 @@ const toInt = (value: string): number => (/^\d+$/.test(value.trim()) ? Number(va
 
 export function formToInput(values: FormValues): { ok: true; input: SajuInput } | { ok: false; errors: FormErrors } {
   const errors: FormErrors = {};
+  const name = normalizeName(values.name);
+  if (name.length === 0) errors.name = "이름을 입력해 주세요.";
   const year = toInt(values.year);
   const month = toInt(values.month);
   const day = toInt(values.day);
@@ -51,6 +55,7 @@ export function formToInput(values: FormValues): { ok: true; input: SajuInput } 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
 
   const input: SajuInput = {
+    name,
     calendar: values.calendar,
     isLeapMonth: values.calendar === "lunar" && values.isLeapMonth,
     year,
@@ -73,6 +78,7 @@ export function formToInput(values: FormValues): { ok: true; input: SajuInput } 
 export function inputToForm(input: SajuInput): FormValues {
   const pad = (n: number) => String(n).padStart(2, "0");
   return {
+    name: input.name,
     calendar: input.calendar,
     isLeapMonth: input.isLeapMonth,
     year: String(input.year),

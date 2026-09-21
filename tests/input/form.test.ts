@@ -3,6 +3,7 @@ import { EMPTY_FORM, formToInput, inputToForm, type FormValues } from "@/lib/inp
 
 const filled: FormValues = {
   ...EMPTY_FORM,
+  name: "테스트",
   year: "1990",
   month: "5",
   day: "15",
@@ -14,7 +15,7 @@ describe("formToInput", () => {
     const r = formToInput({ ...filled, timeKnown: false });
     expect(r).toEqual({
       ok: true,
-      input: { calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "female", placeId: "seoul" },
+      input: { name: "테스트", calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "female", placeId: "seoul" },
     });
   });
 
@@ -33,7 +34,14 @@ describe("formToInput", () => {
   it("빈 값은 필드별 오류", () => {
     const r = formToInput(EMPTY_FORM);
     expect(r.ok).toBe(false);
-    if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["day", "gender", "month", "time", "year"]);
+    if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["day", "gender", "month", "name", "time", "year"]);
+  });
+
+  it("이름은 앞뒤 공백을 지우고, 비어 있으면 오류", () => {
+    const ok = formToInput({ ...filled, timeKnown: false, name: "  김  하늘 " });
+    expect(ok.ok && ok.input.name).toBe("김 하늘");
+    const blank = formToInput({ ...filled, timeKnown: false, name: "   " });
+    expect(!blank.ok && blank.errors.name).toBe("이름을 입력해 주세요.");
   });
 
   it("시간을 안다고 했는데 비어 있으면 time 오류", () => {
@@ -55,7 +63,7 @@ describe("formToInput", () => {
   });
 
   it("inputToForm → formToInput 왕복", () => {
-    const input = { calendar: "lunar", isLeapMonth: true, year: 2020, month: 4, day: 1, time: { hour: 23, minute: 9 }, gender: "male", placeId: "jeju" } as const;
+    const input = { name: "테스트", calendar: "lunar", isLeapMonth: true, year: 2020, month: 4, day: 1, time: { hour: 23, minute: 9 }, gender: "male", placeId: "jeju" } as const;
     const r = formToInput(inputToForm(input));
     expect(r).toEqual({ ok: true, input });
   });

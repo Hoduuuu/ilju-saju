@@ -44,6 +44,7 @@ export function buildUserPrompt(result: SajuResult, ilju: IljuEntry): string {
     .join(", ");
   return [
     "[사주 데이터]",
+    `- 이름: ${input.name}`,
     `- 출생: ${formatBirth(result)}${input.time ? " (계산 기준: 진태양시 보정, 밤 11시~자정 출생은 야자시 관법)" : ""}`,
     `- 일주 ${ilju.hanja}(${ilju.korean}) — 상징: ${ilju.symbol}`,
     "- 원국",
@@ -57,6 +58,7 @@ export function buildUserPrompt(result: SajuResult, ilju: IljuEntry): string {
     warnings.length > 0 ? `- 참고: ${warnings.map((w) => w.message).join(" ")}` : "",
     "",
     "[요청]",
+    `이 사람을 부를 때는 '${input.name}님'이라고 부른다. 모든 섹션에서 이름을 억지로 반복하지 말고 자연스러울 때만 쓴다.`,
     input.time
       ? "위 데이터로 형식에 맞춰 풀이해줘. 태어난 시간을 알고 있으므로 notime 섹션은 쓰지 않는다."
       : "위 데이터로 형식에 맞춰 풀이해줘. 태어난 시간이 모름이므로 notime 섹션을 반드시 쓴다.",

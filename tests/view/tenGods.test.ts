@@ -14,7 +14,7 @@ describe("대운 한 줄 풀이", () => {
   });
 
   it("계유일주(癸)에게 戊辰 대운은 정관이다", () => {
-    const r = calculateSaju({ calendar: "solar", isLeapMonth: false, year: 1994, month: 8, day: 15, time: { hour: 14, minute: 33 }, gender: "female", placeId: "bucheon" });
+    const r = calculateSaju({ name: "테스트", calendar: "solar", isLeapMonth: false, year: 1994, month: 8, day: 15, time: { hour: 14, minute: 33 }, gender: "female", placeId: "bucheon" });
     const current = r.daeun.pillars[r.currentDaeunIndex!];
     expect(current.hanja).toBe("戊辰");
     expect([current.stemTenGod, current.branchTenGod]).toEqual(["정관", "정관"]);

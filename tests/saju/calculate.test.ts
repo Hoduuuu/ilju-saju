@@ -3,7 +3,7 @@ import { calculateSaju } from "@/lib/saju/calculate";
 import { SajuInputError, type SajuInput } from "@/lib/saju/types";
 
 const base: SajuInput = {
-  calendar: "solar",
+  name: "테스트", calendar: "solar",
   isLeapMonth: false,
   year: 1990,
   month: 5,

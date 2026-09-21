@@ -8,7 +8,10 @@ import PillarGrid from "./PillarGrid";
 import ElementBar from "./ElementBar";
 import DaeunStrip from "./DaeunStrip";
 import SeunCard from "./SeunCard";
+import Link from "next/link";
 import { formatBirth } from "@/lib/view/birth";
+import { ELEMENT_HANJA } from "@/lib/saju/ganji";
+import { ELEMENT_NAMES } from "@/lib/view/elements";
 import type { IljuEntry } from "@/lib/ilju/data";
 import type { SajuResult } from "@/lib/saju/types";
 
@@ -43,14 +46,13 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
                 {ilju.korean}일주 사주 결과
               </span>
             </h1>
-            <div className="mt-1 line-clamp-2 pr-6 text-[14px] font-medium leading-snug text-ink/80">{heroSentence}</div>
           </div>
         </IljuVisual>
 
         <section aria-labelledby="sheet-title" className="relative -mt-8 rounded-t-[28px] bg-white px-5 pb-8 pt-6">
           <div className="flex items-center justify-between gap-3">
             <h2 id="sheet-title" className="text-[18px] font-extrabold tracking-[-0.02em]">
-              {ilju.korean}일주의 사주
+              {result.input.name}님의 사주
             </h2>
             <button
               type="button"
@@ -61,7 +63,27 @@ export default function ResultView({ result, ilju, onReset, heroKeywords, heroSe
               다시 입력
             </button>
           </div>
-          <p className="mt-1 text-[13px] text-sub">{formatBirth(result)}</p>
+          {/* 서브 타이틀: AI가 쓴 한 문장. 풀이가 오기 전에는 자리만 잡아 둔다 */}
+          {heroSentence && <p className="mt-1.5 text-[15px] font-medium leading-snug text-ink/80">{heroSentence}</p>}
+          <p className="mt-1.5 text-[13px] text-sub">{formatBirth(result)}</p>
+
+          <InfoCard title="내 일주">
+            <p className="text-[16px] font-bold">
+              <span className="font-hanja">{ilju.hanja}</span> {ilju.korean}일주
+              <span className="ml-1.5 text-[13px] font-semibold text-sub">{ilju.symbol}</span>
+            </p>
+            <p className="mt-2 text-[14px] leading-relaxed">{ilju.description}</p>
+            <p className="mt-3 text-[12px] font-semibold text-sub">
+              <span className="font-hanja">{ELEMENT_HANJA[ilju.element]}</span> {ELEMENT_NAMES[ilju.element]} · {ilju.season} · {ilju.yinYang}
+            </p>
+            <Link
+              href={`/ilju/${ilju.id}`}
+              data-export-ignore="true"
+              className="mt-3 inline-flex h-9 items-center rounded-[var(--radius-control)] bg-white px-3 text-[13px] font-semibold text-ink transition hover:bg-chip-hover"
+            >
+              도감에서 자세히 보기 →
+            </Link>
+          </InfoCard>
 
           {result.warnings.length > 0 && (
             <ul className="mt-4 flex flex-col gap-2">

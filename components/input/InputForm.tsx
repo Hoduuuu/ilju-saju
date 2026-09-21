@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { NAME_MAX_LENGTH } from "@/lib/saju/calculate";
 import { EMPTY_FORM, formToInput, inputToForm, type FormErrors, type FormValues } from "@/lib/input/form";
 import { clearSaju, saveInput } from "@/lib/input/storage";
 import { useStoredInput } from "@/lib/input/useStoredInput";
@@ -95,6 +96,28 @@ function InputFormFields({ initial }: { initial: FormValues }) {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
+      <div>
+        {/* 이름: 한 줄에 제목과 입력칸을 나란히 둬서 세로 공간을 적게 쓴다 */}
+        <label className="flex items-center justify-between gap-4">
+          <span className="flex shrink-0 items-center gap-1.5 text-[13px] font-semibold">
+            <span aria-hidden className="text-[15px] leading-none">✍️</span>
+            이름
+          </span>
+          <input
+            type="text"
+            value={values.name}
+            maxLength={NAME_MAX_LENGTH}
+            autoComplete="name"
+            placeholder="결과에 불러 드릴 이름"
+            aria-invalid={Boolean(errors.name)}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            onChange={(e) => update("name", e.target.value)}
+            className="h-10 min-w-0 flex-1 rounded-none border-0 border-b border-line bg-transparent px-1 text-[16px] font-semibold text-ink outline-none transition placeholder:font-medium placeholder:text-sub focus:border-ink"
+          />
+        </label>
+        <FieldError id="name-error" message={errors.name} />
+      </div>
+
       <div>
         <div className="flex items-center justify-between">
           <p className="flex items-center gap-1.5 text-[13px] font-semibold">

@@ -26,10 +26,24 @@ function isInt(value: unknown, min: number, max: number): value is number {
   return typeof value === "number" && Number.isInteger(value) && value >= min && value <= max;
 }
 
+/** 이름 최대 길이. 화면 제목과 풀이에 들어가므로 짧게 둔다 */
+export const NAME_MAX_LENGTH = 12;
+
+/** 앞뒤 공백·줄바꿈·제어 문자를 지우고, 연속 공백은 하나로, 최대 길이로 자른다 */
+export function normalizeName(raw: string): string {
+  return raw
+    .replace(/[\u0000-\u001f\u007f<>]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, NAME_MAX_LENGTH);
+}
+
 /** 외부(sessionStorage, HTTP 요청)에서 온 값을 SajuInput으로 검증한다. */
 export function parseSajuInput(raw: unknown): SajuInput {
   const v = raw as Record<string, unknown> | null;
   if (!v || typeof v !== "object") throw new SajuInputError("입력값이 비어 있어요.");
+  const name = typeof v.name === "string" ? normalizeName(v.name) : "";
+  if (name.length === 0) throw new SajuInputError("이름을 입력해 주세요.");
   if (v.calendar !== "solar" && v.calendar !== "lunar") throw new SajuInputError("양력/음력을 선택해 주세요.");
   if (typeof v.isLeapMonth !== "boolean") throw new SajuInputError("윤달 여부가 올바르지 않아요.");
   if (!isInt(v.year, 1000, 9999) || !isInt(v.month, 1, 12) || !isInt(v.day, 1, 31)) {
@@ -44,6 +58,7 @@ export function parseSajuInput(raw: unknown): SajuInput {
     time = { hour: t.hour, minute: t.minute };
   }
   return {
+    name,
     calendar: v.calendar,
     isLeapMonth: v.isLeapMonth,
     year: v.year,

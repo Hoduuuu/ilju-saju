@@ -4,6 +4,8 @@ import type { TwelveStage } from "./tables";
 export type Gender = "male" | "female";
 
 export interface SajuInput {
+  /** 화면·풀이에서 부르는 이름. 계산에는 쓰지 않는다 */
+  name: string;
   calendar: "solar" | "lunar";
   isLeapMonth: boolean;
   year: number;

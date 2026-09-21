@@ -4,7 +4,7 @@ import { getIlju } from "@/lib/ilju/data";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/interpret/prompt";
 import type { SajuInput } from "@/lib/saju/types";
 
-const base: SajuInput = { calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: { hour: 14, minute: 30 }, gender: "male", placeId: "seoul" };
+const base: SajuInput = { name: "테스트", calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: { hour: 14, minute: 30 }, gender: "male", placeId: "seoul" };
 
 describe("prompt", () => {
   it("system prompt에 섹션 형식과 금지 규칙이 있다", () => {

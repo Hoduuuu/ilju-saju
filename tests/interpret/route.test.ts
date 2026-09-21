@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { POST } from "@/app/api/interpret/route";
 
 const BIN = fileURLToPath(new URL("../fixtures/fake-claude.mjs", import.meta.url));
-const input = { calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "male", placeId: "seoul" };
+const input = { name: "테스트", calendar: "solar", isLeapMonth: false, year: 1990, month: 5, day: 15, time: null, gender: "male", placeId: "seoul" };
 
 const post = (body: unknown) =>
   POST(new Request("http://localhost/api/interpret", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }));
