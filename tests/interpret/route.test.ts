@@ -43,4 +43,12 @@ describe("POST /api/interpret", () => {
     const text = events.filter((e) => e.type === "text").map((e) => e.text).join("");
     expect(text).toContain("--model|sonnet");
   });
+
+  it("claude가 글을 쓰기 전에 실패하면 미리 만든 풀이로 채워 오류 없이 끝낸다", async () => {
+    process.env.FAKE_CLAUDE_MODE = "auth";
+    const events = (await (await post(input)).text()).trim().split("\n").map((l) => JSON.parse(l));
+    expect(events.some((e) => e.type === "error")).toBe(false);
+    expect(events.at(-1)).toEqual({ type: "done" });
+    expect(events[0].text).toContain("## [elements]");
+  });
 });

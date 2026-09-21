@@ -29,11 +29,12 @@ describe("공유 링크 ID", () => {
 });
 
 describe("공유 사이트(Vercel)", () => {
-  it("AI 풀이를 부르지 않고 disabled 안내를 돌려준다", async () => {
+  it("AI를 부르지 않고, 미리 만든 풀이가 아직 없는 일주도 빈 칸 없이 채운다", async () => {
     process.env.VERCEL = "1";
     const response = await interpretPost(request("http://localhost/api/interpret", input));
-    expect(response.status).toBe(503);
-    expect((await response.json()).code).toBe("disabled");
+    expect(response.status).toBe(200);
+    const text: string = JSON.parse((await response.text()).split("\n")[0]).text;
+    for (const id of ["summary", "nature", "elements", "daeun", "year", "notime"]) expect(text).toContain(`## [${id}]`);
   });
 
   it("새 공유 링크를 만들 수 없다", async () => {

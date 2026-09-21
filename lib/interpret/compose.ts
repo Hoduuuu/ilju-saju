@@ -3,7 +3,7 @@ import type { IljuEntry } from "@/lib/ilju/data";
 import type { SajuResult } from "@/lib/saju/types";
 import { ELEMENTS, ELEMENT_HANJA } from "@/lib/saju/ganji";
 import { ELEMENT_NAMES } from "@/lib/view/elements";
-import { daeunMeaning, tenGodLabel } from "@/lib/view/tenGods";
+import { TEN_GOD_YEAR_MEANING, daeunMeaning, tenGodLabel } from "@/lib/view/tenGods";
 import { parseSections } from "./sections";
 import iljuReadings from "@/data/readings/ilju.json";
 import yearReadings from "@/data/readings/year-2026.json";
@@ -13,7 +13,8 @@ import yearReadings from "@/data/readings/year-2026.json";
  * - 일주별로 미리 만든 AI 풀이(요약·성향·일과 재물·관계)
  * - 일간별로 미리 만든 올해 풀이
  * - 이 사람 원국으로 계산해 쓰는 오행 균형·대운·시간 모름 안내
- * 를 AI 풀이와 같은 "## [섹션]" 형식으로 이어 붙인다. 미리 만든 글이 없으면 null.
+ * 를 AI 풀이와 같은 "## [섹션]" 형식으로 이어 붙인다.
+ * 미리 만든 글이 아직 없는 경우에도 빈 칸이 생기지 않도록 도감 설명·십신 풀이로 대신 채운다.
  */
 const ILJU = iljuReadings as Record<string, string>;
 const YEAR = yearReadings as Record<string, string>;
@@ -87,16 +88,19 @@ function daeunSection(result: SajuResult): string {
 const NOTIME_SECTION =
   "태어난 시간을 몰라서 시주(태어난 시각의 기둥) 두 글자를 빼고 6글자로 풀이했어요. 시주는 속마음과 말년의 흐름, 자녀와의 관계 같은 부분을 보여 줘서, 시간을 알면 이 부분과 오행 균형이 더 정확해져요.\n\n출생 시간은 출생 기록이 남은 서류나 가족에게 확인할 수 있는 경우가 많아요. 알게 되면 다시 입력해 보세요.";
 
-export function composePresetReading(result: SajuResult, ilju: IljuEntry): string | null {
-  const base = ILJU[ilju.id];
-  const year = YEAR[ilju.stem];
-  if (!base || !year) return null;
-  const s = parseSections(base);
-  const yearBody = parseSections(year).year;
-  if (!s.summary || !s.nature || !s.work || !s.relation || !yearBody) return null;
-  const parts: [string, string][] = [
-    ["summary", s.summary],
-    ["nature", s.nature],
+/** 미리 만든 올해 풀이가 없을 때: 세운 천간·지지의 십신 풀이로 쓴다 */
+function yearFallback(result: SajuResult): string {
+  const { seun } = result;
+  const [stemHanja, branchHanja] = [...seun.hanja];
+  return `${seun.year}년은 ${seun.hanja}(${seun.korean})년이에요. 올해 기운이 나에게 어떤 역할인지로 한 해의 흐름을 읽어요.\n\n**${stemHanja} ${seun.stemTenGod}**: ${TEN_GOD_YEAR_MEANING[seun.stemTenGod]}. **${branchHanja} ${seun.branchTenGod}**: ${TEN_GOD_YEAR_MEANING[seun.branchTenGod]}.`;
+}
+
+export function composePresetReading(result: SajuResult, ilju: IljuEntry): string {
+  const s = parseSections(ILJU[ilju.id] ?? "");
+  const yearBody = parseSections(YEAR[ilju.stem] ?? "").year ?? yearFallback(result);
+  const parts: [string, string | undefined][] = [
+    ["summary", s.summary ?? `키워드: ${ilju.keywords.join(", ")}\n${ilju.symbol} 같은 사람`],
+    ["nature", s.nature ?? ilju.description],
     ["elements", elementsSection(result)],
     ["work", s.work],
     ["relation", s.relation],
@@ -104,5 +108,13 @@ export function composePresetReading(result: SajuResult, ilju: IljuEntry): strin
     ["year", yearBody],
   ];
   if (!result.input.time) parts.push(["notime", NOTIME_SECTION]);
-  return parts.map(([id, body]) => `## [${id}]\n${body}`).join("\n\n");
+  return parts
+    .filter((part): part is [string, string] => Boolean(part[1]))
+    .map(([id, body]) => `## [${id}]\n${body}`)
+    .join("\n\n");
+}
+
+/** 미리 만든 풀이가 모두(60일주 + 10일간) 채워졌는지 */
+export function presetCoverage(): { ilju: number; year: number } {
+  return { ilju: Object.keys(ILJU).length, year: Object.keys(YEAR).length };
 }
