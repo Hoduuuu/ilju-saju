@@ -25,10 +25,10 @@ export default async function Image() {
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: "#F8F8F8", fontFamily: "Pretendard" }}>
-        {/* 아래 먼 산 능선이 화면 폭을 채운다 */}
+        {/* 아래 먼 산 능선이 화면 폭을 채우고, 오른쪽에 나무가 선다 */}
         <img src={svgUri("mountain", `${BAND_EXTENT.left} ${ART_TOP} ${bandW} ${artH}`, "xMidYMax slice")} width={1200} height={230} style={{ position: "absolute", left: 0, bottom: 0 }} alt="" />
-        {/* 오른쪽 위에 해, 그 옆에 나무 */}
-        <img src={svgUri("sun", `0 ${ART_TOP} ${VIEW_W} ${artH}`, "xMidYMax meet")} width={260} height={190} style={{ position: "absolute", right: 270, top: 90 }} alt="" />
+        {/* 오른쪽 위에 작은 해. 해 아래 가로선은 빼고 원만 잘라 보여 준다(원: 중심 190,348 · 반지름 104) */}
+        <img src={svgUri("sun", "82 240 216 216", "xMidYMid meet")} width={130} height={130} style={{ position: "absolute", right: 250, top: 64 }} alt="" />
         <img src={svgUri("tree", `0 ${ART_TOP} ${VIEW_W} ${artH}`, "xMaxYMax meet")} width={360} height={264} style={{ position: "absolute", right: 40, bottom: 150 }} alt="" />
 
         <div style={{ display: "flex", flexDirection: "column", padding: "72px 80px" }}>
