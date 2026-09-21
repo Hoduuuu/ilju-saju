@@ -120,6 +120,7 @@ export default function ResultPage() {
           timeKnown={input.time !== null}
           accent={ilju.palette.ink}
           onRetry={retry}
+          note={ON_SHARE_SITE ? "일주별로 미리 만든 AI 풀이에, 내 사주로 계산한 오행·대운 풀이를 더했어요." : undefined}
         />
 
         <div data-export-ignore="true" className="mt-6">

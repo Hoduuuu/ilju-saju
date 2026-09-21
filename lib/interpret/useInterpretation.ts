@@ -33,7 +33,7 @@ export function useInterpretation(input: SajuInput | null): { state: InterpretSt
           dispatch({
             type: "networkError",
             message: body?.message ?? "풀이 서버에 연결하지 못했어요.",
-            code: body?.code === "disabled" || body?.code === "quota" ? body.code : undefined,
+            code: body?.code === "disabled" ? "disabled" : undefined,
           });
           return;
         }

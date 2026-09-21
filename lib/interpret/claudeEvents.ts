@@ -1,6 +1,6 @@
 import { createLineSplitter } from "./lines";
 
-export type InterpretErrorCode = "not_installed" | "auth" | "limit" | "timeout" | "failed" | "disabled" | "quota";
+export type InterpretErrorCode = "not_installed" | "auth" | "limit" | "timeout" | "failed" | "disabled";
 
 export type InterpretEvent =
   | { type: "text"; text: string }
@@ -13,8 +13,7 @@ export const ERROR_MESSAGES: Record<InterpretErrorCode, string> = {
   limit: "Claude 사용량 한도에 도달했어요. 잠시 후 다시 시도해 주세요.",
   timeout: "풀이가 2분을 넘겨서 중단했어요. 다시 시도해 주세요.",
   failed: "풀이를 만들지 못했어요. 다시 시도해 주세요.",
-  disabled: "지금은 AI 풀이를 불러올 수 없어요. 사주 계산과 일주 도감은 그대로 볼 수 있어요.",
-  quota: "AI 풀이는 하루 4번까지 볼 수 있어요. 오늘은 모두 사용했어요. 내일 다시 이용해 주세요.",
+  disabled: "공유용 사이트에서는 AI 풀이를 새로 만들지 않아요. 사주 계산과 일주 도감은 그대로 볼 수 있어요.",
 };
 
 export function classifyError(raw: string): { code: InterpretErrorCode; message: string } {
